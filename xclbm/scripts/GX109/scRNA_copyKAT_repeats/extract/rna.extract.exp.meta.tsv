@@ -1,0 +1,10 @@
+tool	in_dir	out_id
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/null_1	null_1
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/null_2	null_2
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/null_3	null_3
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/stem_1	stem_1
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/stem_2	stem_2
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/stem_3	stem_3
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/unclassified_1	unclassified_1
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/unclassified_2	unclassified_2
+copykat	/home/xianjie/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1/output/GX109_copykat_repeats/run/unclassified_3	unclassified_3
