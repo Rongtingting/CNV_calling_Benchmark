@@ -16,22 +16,15 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
-
 #Rscript $work_dir/numbat_preprocess_expr_ref.R  \
 #  <count matrix dir>  \
 #  <cell annotation>   \
 #  <out file>
 
 /usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr_ref.R  \
-  $project_dir/input/GX109/scRNA/helen_filtered_matrices  \
-  $work_dir/GX109.numbat.stem.ref.cell.anno.tsv  \
-  $work_dir/GX109.numbat.stem.ref.gene_by_cell_type.mtx.rds
-
-/usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr_ref.R  \
-  $project_dir/input/GX109/scRNA/helen_filtered_matrices  \
-  $work_dir/GX109.numbat.unclassified.ref.cell.anno.tsv  \
-  $work_dir/GX109.numbat.unclassified.ref.gene_by_cell_type.mtx.rds
+  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA/helen_filtered_matrices  \
+  $work_dir/../allele_ref/GX109.ref.anno.immune.tsv  \
+  $work_dir/GX109.numbat.immune.ref.gene_by_cell_type.mtx.rds
 
 set +ux
 conda deactivate

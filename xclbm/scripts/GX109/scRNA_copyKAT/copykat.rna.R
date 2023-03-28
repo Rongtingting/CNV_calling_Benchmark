@@ -37,7 +37,7 @@ library(copykat)
 
 control <- ""
 if (control_cell_type != "NULL") {
-  cell_anno <- read.delim(cell_anno_fn, header = F, stringsAsFactors = F)
+  cell_anno <- read.table(cell_anno_fn, sep = "\t", header = F, stringsAsFactors = F)
   colnames(cell_anno) <- c("cell", "cell_type")
   control <- cell_anno$cell[cell_anno$cell_type == control_cell_type]
 }

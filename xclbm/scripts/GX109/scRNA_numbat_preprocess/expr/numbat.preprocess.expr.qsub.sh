@@ -16,28 +16,18 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
-
 #Rscript $work_dir/numbat_preprocess_expr.R  \
 #  <count matrix dir>  \
 #  <ref cells file>   \
-#  <ref cell type>  \
+#  <ref cell type>  only used in filename \
 #  <out dir>    \
 #  <out prefix>  \
 #  <save raw> 
 
 /usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr.R  \
-  $project_dir/input/GX109/scRNA/helen_filtered_matrices  \
-  $work_dir/GX109.numbat.stem.ref.cell.anno.tsv  \
-  stem  \
-  $work_dir     \
-  GX109.numbat  \
-  True
-
-/usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr.R  \
-  $project_dir/input/GX109/scRNA/helen_filtered_matrices  \
-  $work_dir/GX109.numbat.unclassified.ref.cell.anno.tsv  \
-  unclassified   \
+  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA/helen_filtered_matrices  \
+  $work_dir/../allele_ref/GX109.ref.anno.immune.tsv  \
+  "immune_cells"   \
   $work_dir    \
   GX109.numbat  \
   False

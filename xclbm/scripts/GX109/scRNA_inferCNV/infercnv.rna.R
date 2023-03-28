@@ -1,8 +1,3 @@
-#################
-##HUANG Rongting
-##2021-06-07
-#################
-
 app <- "infercnv.rna.R"
 
 args <- commandArgs(T)
@@ -24,7 +19,6 @@ if (! dir.exists(out_dir)) {
 }
 
 setwd(out_dir)
-set.seed(123)
 
 library(Seurat)
 library(infercnv)
@@ -34,32 +28,19 @@ gex_mtx <- Seurat::Read10X(data.dir = matrix_dir)
 
 ### parse cell types
 anno <- read.table(anno_file, sep = "\t", header = F, stringsAsFactors = F)
-colnames(anno) <- c("cell", "cell_type")
-celltype <- c(NA, unique(anno$cell_type))
 
-### run inferCNV with loop
-for (i in celltype) {
-  ref <- c(i)
-  if (is.na(i)) {
-    ref <- c()
-    i <- "NULL"
-  }
-  print(paste0("[", app, "] cell type ", i))
-  infercnv_obj1 <- CreateInfercnvObject(raw_counts_matrix=gex_mtx,
-                                        annotations_file=anno_file,
-                                        delim='\t',
-                                        gene_order_file=gene_file,
-                                        ref_group_names=ref)
+infercnv_obj1 <- CreateInfercnvObject(raw_counts_matrix=gex_mtx,
+                                      annotations_file=anno_file,
+                                      delim='\t',
+                                      gene_order_file=gene_file,
+                                      ref_group_names=c("immune cells"))
 
-  res_dir <- paste0(out_dir, '/', sid, '_', i)
-  
-  infercnv_obj1 <- infercnv::run(infercnv_obj1,
-                                 cutoff=0.1,  
-                                 out_dir=res_dir, 
-                                 cluster_by_groups=T,   
-                                 denoise=T,
-                                 HMM=T)
-}
+infercnv_obj1 <- infercnv::run(infercnv_obj1,
+                               cutoff=0.1,  
+                               out_dir=out_dir, 
+                               cluster_by_groups=T,   
+                               denoise=T,
+                               HMM=T)
 
 print(paste0("[", app, "] All Done!"))
 

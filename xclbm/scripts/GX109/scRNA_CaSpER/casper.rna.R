@@ -56,7 +56,9 @@ log.ge <- as.matrix(obj@assays$RNA@data)   # a gene x barcode matrix
 #select control cell type
 anno <- read.delim(anno_file, stringsAsFactors = F, header = F)
 colnames(anno) <- c("cell", "cell_type")
+print(str(anno))
 control <- anno$cell[anno$cell_type == control_cell_type]
+print(str(control))
 
 genes <- rownames(log.ge)
 if (file.exists(gene_anno_fn)) {

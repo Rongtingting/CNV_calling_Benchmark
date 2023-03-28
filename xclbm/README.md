@@ -1,1 +1,1 @@
-# Benchmarking CNV detection methods in scRAN-seq
+# Benchmarking CNV detection methods in scRNA-seq
