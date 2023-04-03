@@ -358,16 +358,16 @@ run_bm_fast <- function(
   
     xclone_dat <- xclone_dat_list[[1]]
   
-    i <- 1
+    j <- 1
     for (dat in dat_list) {
       if (dat$method == "xclone") {
-        dat_list[[i]] <- xclone_dat
+        dat_list[[j]] <- xclone_dat
         break
       }
-      i <- i + 1
+      j <- j + 1
     }
-    if (i > length(dat_list))
-      dat_list[[i]] <- xclone_dat
+    if (j > length(dat_list))
+      dat_list[[j]] <- xclone_dat
   
     if (verbose)
       str(dat_list)
