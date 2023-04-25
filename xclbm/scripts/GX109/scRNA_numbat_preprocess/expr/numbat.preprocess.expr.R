@@ -1,38 +1,37 @@
-#!/bin/bash
-#PBS -N numbat_preprocess_expr
-#PBS -q cgsd
-#PBS -l nodes=1:ppn=10,mem=100g,walltime=100:00:00
-#PBS -o numbat_preprocess_expr.out
-#PBS -e numbat_preprocess_expr.err
 
-source ~/.bashrc
-conda activate XCLBM
+app <- "numbat.preprocess.expr.R"
 
-# run `set` after `source` & `conda activate` as the source file has an unbound variable
-set -eux  
+args <- commandArgs(T)
+if (length(args) < 6) {
+  msg <- paste0("Usage: ", app, " <matrix dir> <ref cells file> \\
+                                  <ref cell type>    \\
+                                  <output dir> <out prefix> <save raw>")
+  write(msg, file = stderr())
+  quit("no", 1)
+}
 
-work_dir=`cd $(dirname $0) && pwd`
-if [ -n "$PBS_O_WORKDIR" ]; then
-  work_dir=$PBS_O_WORKDIR
-fi
+count_mtx_dir <- args[1]
+ref_cell_fn <- args[2]
+ref_cell_type <- args[3]
+out_dir <- args[4]
+out_prefix <- args[5]
+save_raw <- args[6]
 
-#Rscript $work_dir/numbat_preprocess_expr.R  \
-#  <count matrix dir>  \
-#  <ref cells file>   \
-#  <ref cell type>  only used in filename \
-#  <out dir>    \
-#  <out prefix>  \
-#  <save raw> 
+set.seed(123)
 
-/usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr.R  \
-  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA/helen_filtered_matrices  \
-  $work_dir/../allele_ref/GX109.ref.anno.immune.tsv  \
-  "immune_cells"   \
-  $work_dir    \
-  GX109.numbat  \
-  False
+library(Seurat)
+library(dplyr)
 
-set +ux
-conda deactivate
-echo [`basename $0`] All Done!
+count_mtx <- Seurat::Read10X(data.dir = count_mtx_dir)   # gene x cell
+str(count_mtx) 
+if (save_raw == "True")
+  saveRDS(count_mtx, sprintf("%s/%s.raw.count.mtx.rds", out_dir, out_prefix))
+
+ref_cells <- read.delim(ref_cell_fn, header = T, stringsAsFactors = F)
+cnt_mtx1 <- count_mtx[, ! (colnames(count_mtx) %in% ref_cells$cell)]
+str(cnt_mtx1)
+saveRDS(cnt_mtx1, sprintf("%s/%s.%s_filtered.count.mtx.rds", out_dir, 
+                          out_prefix, ref_cell_type))
+
+print(paste0("[", app, "] All Done!"))
 
