@@ -14,7 +14,7 @@ fi
 
 echo -e "\nGenerate xclbm scripts for gene scale.\n"
 out_dir=$result_dir/gene_scale
-python gen_xclbm_fast2.py  \
+python  $repo_scripts_dir/utils/gen_xclbm_fast2.py  \
   --sid  GX109   \
   --sp  GX109        \
   --cnvScale  gene    \
@@ -30,7 +30,7 @@ chmod u+x $out_dir/run.sh
 
 echo -e "\nGenerate xclbm scripts for arm scale.\n"
 out_dir=$result_dir/arm_scale
-python gen_xclbm_fast2.py  \
+python  $repo_scripts_dir/utils/gen_xclbm_fast2.py  \
   --sid  GX109   \
   --sp  GX109        \
   --cnvScale  arm    \
