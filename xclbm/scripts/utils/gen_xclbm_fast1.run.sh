@@ -13,7 +13,7 @@ if [ ! -e "$result_dir" ]; then
 fi
 
 
-echo "generate xclbm scripts for gene scale"
+echo -e "\nGenerate xclbm scripts for gene scale.\n"
 out_dir=$result_dir/gene_scale
 python gen_xclbm_fast1.py  \
   --sid  GX109   \
@@ -32,7 +32,7 @@ python gen_xclbm_fast1.py  \
 chmod u+x $out_dir/run.sh
 
 
-echo "generate xclbm scripts for arm scale"
+echo -e "\nGenerate xclbm scripts for arm scale.\n"
 out_dir=$result_dir/arm_scale
 python gen_xclbm_fast1.py  \
   --sid  GX109   \

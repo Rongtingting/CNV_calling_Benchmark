@@ -8,11 +8,13 @@ tool_dir=/groups/cgsd/xianjie/result/xclbm/GX109/GX109_5400_0302
 gene_anno=/groups/cgsd/xianjie/data/refapp/xclone/annotate_genes_hg38_update.txt
 result_dir=/home/xianjie/debug/test-xclbm/normal
 
+
 if [ ! -e "$result_dir" ]; then
     mkdir $result_dir
 fi
 
-echo "generate xclbm scripts for gene scale"
+
+echo -e "\nGenerate xclbm scripts for gene scale.\n"
 out_dir=$result_dir/gene_scale
 python gen_xclbm.py  \
   --sid  GX109   \
@@ -34,7 +36,7 @@ python gen_xclbm.py  \
 chmod u+x $out_dir/run.sh
 
 
-echo "generate xclbm scripts for arm scale"
+echo -e "\nGenerate xclbm scripts for arm scale.\n"
 out_dir=$result_dir/arm_scale
 python gen_xclbm.py  \
   --sid  GX109   \

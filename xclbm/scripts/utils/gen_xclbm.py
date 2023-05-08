@@ -33,42 +33,42 @@ class Config:
         self.loh_dir = None
 
 
-    def __assert_e(self, path):
-        if path is None or not os.path.exists(path):
-            raise OSError
-
-
-    def __assert_n(self, var):
-        if var is None or not var:
-            raise ValueError
-
-
     def check_args(self):
-        self.__assert_n(self.sid)
-        self.__assert_n(self.sp)
-        self.__assert_n(self.cnv_scale)
+        assert_n(self.sid)
+        assert_n(self.sp)
+        assert_n(self.cnv_scale)
         if self.cnv_scale not in ("gene", "arm"):
             raise ValueError
 
-        self.__assert_e(self.casper_dir)
-        self.__assert_e(self.copykat_dir)
-        self.__assert_e(self.infercnv_dir)
-        self.__assert_e(self.numbat_dir)
-        self.__assert_e(self.xclone_dir)
+        assert_e(self.casper_dir)
+        assert_e(self.copykat_dir)
+        assert_e(self.infercnv_dir)
+        assert_e(self.numbat_dir)
+        assert_e(self.xclone_dir)
 
-        self.__assert_e(self.cell_anno_fn)
-        self.__assert_e(self.gene_anno_fn)
-        self.__assert_e(self.truth_fn)
+        assert_e(self.cell_anno_fn)
+        assert_e(self.gene_anno_fn)
+        assert_e(self.truth_fn)
 
-        self.__assert_n(self.out_dir)
+        assert_n(self.out_dir)
         if not os.path.exists(self.out_dir):
             os.mkdir(self.out_dir)
 
-        self.__assert_e(self.repo_scripts_dir)
+        assert_e(self.repo_scripts_dir)
 
-        self.__assert_n(self.cnv_cell_type)
+        assert_n(self.cnv_cell_type)
         if not self.plot_dec:
             self.plot_dec = CONF_PLOT_DEC
+
+
+def assert_e(path):
+    if path is None or not os.path.exists(path):
+        raise OSError
+
+
+def assert_n(var):
+    if var is None or not var:
+        raise ValueError
 
 
 def __get_xclone_prob_dir(conf, cnv_type):
@@ -349,15 +349,15 @@ def main():
 
     # generate R scripts
     r_scripts = generate_r(conf)
-    print(r_scripts)
+    print("R scripts: %s\n" % str(r_scripts))
 
     # generate qsub scripts
     qsub_scripts = generate_qsub(conf)
-    print(qsub_scripts)
+    print("qsub scripts: %s\n" % str(qsub_scripts))
 
     # generate run shell scripts
     run_script = generate_run(conf)
-    print(run_script)
+    print("run script: %s\n" % (run_script, ))
 
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
