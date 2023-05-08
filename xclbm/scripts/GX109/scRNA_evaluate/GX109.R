@@ -53,6 +53,8 @@ bm_GX109 <- function(
     str(gene_anno)
 
   truth_region <- read.delim(truth_fn, header = T, stringsAsFactors = F)
+  if (any(! truth_region$cnv_type %in% c("gain", "loss", "loh")))
+    stop(sprintf("[E::%s] cnv type should be 'gain', 'loss' or 'loh'.", func))
   idx <- truth_region$cnv_type %in% c("gain", "loss")
   truth_region$cnv_type[idx] <- paste0("copy_", truth_region$cnv_type[idx])
   truth_region <- truth_region %>% 
@@ -135,6 +137,8 @@ bm_GX109_fast1 <- function(
     str(gene_anno)
 
   truth_region <- read.delim(truth_fn, header = T, stringsAsFactors = F)
+  if (any(! truth_region$cnv_type %in% c("gain", "loss", "loh")))
+    stop(sprintf("[E::%s] cnv type should be 'gain', 'loss' or 'loh'.", func))
   idx <- truth_region$cnv_type %in% c("gain", "loss")
   truth_region$cnv_type[idx] <- paste0("copy_", truth_region$cnv_type[idx])
   truth_region <- truth_region %>% 
