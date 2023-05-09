@@ -37,15 +37,13 @@ dat_dir_list <- c(
 
 cell_anno_fn <- "GX109-T1c_scRNA_annotation_2column.tsv"
 gene_anno_fn <- "annotate_genes_hg38_update.txt"
-truth_fn <- "GX109.cnv.ground.truth.tsv"
+truth_fn <- "GX109.cnv.ground.truth.with_celltype.tsv"
 out_dir <- "result"
-
-cnv_cell_type <- c("stem, cancer cell")
 
 bm_GX109(
   sid, cnv_type, cnv_scale, 
   method_list, method_sub_list, mtx_type_list, dat_dir_list,
-  cell_anno_fn, gene_anno_fn, truth_fn, cnv_cell_type, out_dir,
+  cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
   plot_dec = 4, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,

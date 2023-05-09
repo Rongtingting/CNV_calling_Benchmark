@@ -23,7 +23,6 @@ class Config:
         self.truth_fn = None
         self.repo_scripts_dir = None
         self.out_dir = None
-        self.cnv_cell_type = None
 
         self.plot_dec = None
 
@@ -56,7 +55,6 @@ class Config:
 
         assert_e(self.repo_scripts_dir)
 
-        assert_n(self.cnv_cell_type)
         if not self.plot_dec:
             self.plot_dec = CONF_PLOT_DEC
 
@@ -148,16 +146,13 @@ cell_anno_fn <- "%s"
 gene_anno_fn <- "%s"
 truth_fn <- "%s"
 out_dir <- "result"
-
-cnv_cell_type <- c("%s")
-''' % (conf.cell_anno_fn, conf.gene_anno_fn, conf.truth_fn, 
-       conf.cnv_cell_type)
+''' % (conf.cell_anno_fn, conf.gene_anno_fn, conf.truth_fn)
 
     s += '''
 bm_%s(
   sid, cnv_type, cnv_scale, 
   method_list, method_sub_list, mtx_type_list, dat_dir_list,
-  cell_anno_fn, gene_anno_fn, truth_fn, cnv_cell_type, out_dir,
+  cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
   plot_dec = %d, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
@@ -276,7 +271,6 @@ def usage(fp = sys.stderr):
     s += "  --casper DIR           CaSpER dir.\n"
     s += "  --copykat DIR          CopyKAT dir.\n"
     s += "  --infercnv DIR         InferCNV dir.\n"
-    s += "  --cnvCell STR          Cell type harboring CNVs.\n"
     s += "  --truth FILE           Ground truth file.\n"
     s += "  --cellAnno FILE        Cell annotation file.\n"
     s += "  --geneAnno FILE        Gene annotation file.\n"
@@ -302,7 +296,7 @@ def main():
         "outdir=",
         "xclone=", "numbat=",
         "casper=", "copykat=", "infercnv=",
-        "cnvCell=", "truth=", 
+        "truth=", 
         "cellAnno=", "geneAnno=", 
         "repoScripts=",
         "plotDec=",
@@ -321,7 +315,6 @@ def main():
         elif op in ("--casper"): conf.casper_dir = val
         elif op in ("--copykat"): conf.copykat_dir = val
         elif op in ("--infercnv"): conf.infercnv_dir = val
-        elif op in ("--cnvcell"): conf.cnv_cell_type = val
         elif op in ("--truth"): conf.truth_fn = val
         elif op in ("--cellanno"): conf.cell_anno_fn = val
         elif op in ("--geneanno"): conf.gene_anno_fn = val

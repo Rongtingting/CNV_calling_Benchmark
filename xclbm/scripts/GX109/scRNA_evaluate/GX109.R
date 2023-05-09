@@ -21,13 +21,12 @@
 #'   file downloaded from XClone repo whose first 5 columns are 
 #'   GeneName, GeneID, chr, start, stop.
 #' @param truth_fn A string. Path to ground truth file. It is a TSV file
-#'   containing 4 columns chrom, start, end, cnv_type.
-#' @param cnv_cell_type A string vector. The cell types harboring CNVs.
+#'   containing 5 columns chrom, start, end, cell_type, cnv_type.
 #' @return ggplot2 object vector.
 bm_GX109 <- function(
   sid, cnv_type, cnv_scale, 
   method_list, method_sub_list, mtx_type_list, dat_dir_list,
-  cell_anno_fn, gene_anno_fn, truth_fn, cnv_cell_type, out_dir,
+  cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
@@ -62,7 +61,7 @@ bm_GX109 <- function(
   if (verbose)
     str(truth_region)
 
-  truth <- construct_truth(truth_region, cnv_cell_type)
+  truth <- truth_region
   if (verbose)
     str(truth)
 
@@ -111,7 +110,7 @@ bm_GX109 <- function(
 bm_GX109_fast1 <- function(
   sid, cnv_type, cnv_scale, 
   xclone_dir, dat_list_fn,
-  cell_anno_fn, gene_anno_fn, truth_fn, cnv_cell_type, out_dir,
+  cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
@@ -146,7 +145,7 @@ bm_GX109_fast1 <- function(
   if (verbose)
     str(truth_region)
 
-  truth <- construct_truth(truth_region, cnv_cell_type)
+  truth <- truth_region
   if (verbose)
     str(truth)
 

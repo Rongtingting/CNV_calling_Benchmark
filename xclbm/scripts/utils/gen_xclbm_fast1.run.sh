@@ -22,7 +22,6 @@ python  $repo_scripts_dir/utils/gen_xclbm_fast1.py  \
   --outdir  $out_dir    \
   --datList  /home/xianjie/debug/test-xclbm/normal/gene_scale  \
   --xclone  /groups/cgsd/xianjie/result/xclbm/GX109/GX109_5400_xclone_0403/extracted_data \
-  --cnvCell  "stem, cancer cell"   \
   --truth  $anno_dir/GX109.cnv.ground.truth_update.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno     \
@@ -41,7 +40,6 @@ python  $repo_scripts_dir/utils/gen_xclbm_fast1.py  \
   --outdir  $out_dir    \
   --datList  /home/xianjie/debug/test-xclbm/normal/arm_scale  \
   --xclone  /groups/cgsd/xianjie/result/xclbm/GX109/GX109_5400_xclone_0403/extracted_data_merge_chr_arm    \
-  --cnvCell  "stem, cancer cell"   \
   --truth  $anno_dir/GX109.cnv.ground.truth_update.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno      \

@@ -26,7 +26,6 @@ python  $repo_scripts_dir/utils/gen_xclbm.py  \
   --casper  $tool_dir/GX109_casper  \
   --copykat  $tool_dir/GX109_copykat  \
   --infercnv  $tool_dir/GX109_infercnv  \
-  --cnvCell  "stem, cancer cell"   \
   --truth  $anno_dir/GX109.cnv.ground.truth_update.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno    \
@@ -48,7 +47,6 @@ python  $repo_scripts_dir/utils/gen_xclbm.py  \
   --casper  $tool_dir/GX109_casper  \
   --copykat  $tool_dir/GX109_copykat  \
   --infercnv  $tool_dir/GX109_infercnv  \
-  --cnvCell  "stem, cancer cell"   \
   --truth  $anno_dir/GX109.cnv.ground.truth_update.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno    \
