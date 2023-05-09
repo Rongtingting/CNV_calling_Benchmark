@@ -24,6 +24,17 @@ rep_n <- function(v, n) {
 }
 
 
+get_step_index <- function(step_name, step_idx) {
+  if (step_name == "roc")
+    return(5)
+  else if (step_name == "prc")
+    return(6)
+  else
+    stop("[E::get_step_index] invalid step name.")
+    #return(step_idx + 1)
+}
+
+
 #' @param sid A string. Sample ID.
 #' @param cnv_type A string. CNV type, could be `copy_gain`, `copy_loss`,
 #'   or `loh`.
@@ -165,7 +176,6 @@ run_benchmark <- function(
   figs <- list()
   s_idx <- 4
   for (i in 1:n_mt) {
-    s_idx <- s_idx + 1
     mt_name <- metrics[i]
     mt_upper <- stringr::str_to_upper(mt_name)
     mt_lower <- stringr::str_to_lower(mt_name)
@@ -184,6 +194,7 @@ run_benchmark <- function(
     if (verbose)
       str(dat_list)
   
+    s_idx <- get_step_index(mt_lower, s_idx)
     dir_metric <- sprintf("%s/s%d_%s", out_dir, s_idx, mt_lower)
     if (mt_upper == "ROC")
       save_roc(dat_list, dir_metric, prefix, save_all)
@@ -320,6 +331,7 @@ run_bm_fast <- function(
 
   # calculate Metrics
   figs <- list()
+  s_idx <- 4
   for (i in 1:n_mt) {
     mt_name <- metrics[i]
     mt_upper <- stringr::str_to_upper(mt_name)
@@ -352,7 +364,7 @@ run_bm_fast <- function(
     if (verbose)
       str(xclone_dat_list)
   
-    # merge ROC data
+    # merge metric data
     flush_print(sprintf("[I::%s][%s] merge %s data ...", func, str_now(),
                         mt_upper))
   
@@ -372,7 +384,8 @@ run_bm_fast <- function(
     if (verbose)
       str(dat_list)
 
-    dir_metric <- sprintf("%s/%s", out_dir, mt_lower)
+    s_idx <- get_step_index(mt_lower, s_idx)
+    dir_metric <- sprintf("%s/s%d_%s", out_dir, s_idx, mt_lower)
     if (mt_upper == "ROC") 
       save_roc(dat_list, dir_metric, prefix, save_all)
     else
