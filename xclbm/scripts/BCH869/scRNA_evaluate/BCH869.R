@@ -229,7 +229,7 @@ bm_BCH869_fast2 <- function(
   xclone_dir, metrics, metric_fn,
   gene_anno_fn,
   cell_subset_fn, gene_subset_fn, truth_fn, out_dir,
-  overlap_mode = "customize", filter_func = NULL, roc_max_n_cutoff = 1000,
+  overlap_mode = "customize", filter_func = NULL, max_n_cutoff = 1000,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE)
