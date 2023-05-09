@@ -1,6 +1,0 @@
-tool	in_dir	out_id
-casper	/groups/cgsd/xianjie/xclbm/res-v1/TNBC1_casper_n	casper_n
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/TNBC1_copykat_n	copykat_n
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/TNBC1_copykat_null	copykat_null
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/TNBC1_infercnv/TNBC1_N	infercnv_n
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/TNBC1_infercnv/TNBC1_NULL	infercnv_null

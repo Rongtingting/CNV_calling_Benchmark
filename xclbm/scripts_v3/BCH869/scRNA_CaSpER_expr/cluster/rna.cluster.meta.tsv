@@ -1,6 +1,0 @@
-tool	in_dir	out_id
-casper	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_casper_normal	casper_normal
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_copykat_normal	copykat_normal
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_copykat_null	copykat_null
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_infercnv/BCH869_Normal	infercnv_normal
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_infercnv/BCH869_NULL	infercnv_null
