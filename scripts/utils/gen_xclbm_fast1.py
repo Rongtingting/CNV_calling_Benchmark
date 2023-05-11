@@ -75,7 +75,7 @@ def __get_xclone_prob_dir(conf, cnv_type):
 
 
 def __get_out_prefix(conf):
-    return conf.sp + ".run.fast1"
+    return conf.sp + ".bm.fast1"
 
 
 def __get_extracted_data(conf, cnv_type):
@@ -334,7 +334,7 @@ def main():
 
 
 APP = "gen_xclbm_fast1.py"
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 CONF_PLOT_DEC = 3
 

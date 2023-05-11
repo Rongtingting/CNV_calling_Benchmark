@@ -81,7 +81,7 @@ def __get_xclone_prob_dir(conf, cnv_type):
 
 
 def __get_out_prefix(conf):
-    return conf.sp + ".run"
+    return conf.sp + ".bm"
 
 
 def __generate_r(fn, conf, cnv_type):
@@ -357,7 +357,7 @@ def main():
 
 
 APP = "gen_xclbm.py"
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 
 CONF_PLOT_DEC = 3
 
