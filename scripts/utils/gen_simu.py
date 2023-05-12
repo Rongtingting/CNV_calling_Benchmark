@@ -11,6 +11,9 @@ class Config:
         self.sid = None        # sample ID
         self.sp = None         # script prefix
 
+        self.bam_fn = None
+        self.cell_tag = None
+
         self.dir_10x = None
         self.gene_is_row = None
  
@@ -30,6 +33,9 @@ class Config:
     def check_args(self):
         assert_n(self.sid)
         assert_n(self.sp)
+
+        assert_e(self.bam_fn)
+        assert_n(self.cell_tag)
 
         assert_e(self.dir_10x)
         if self.gene_is_row is None:
@@ -71,7 +77,7 @@ def assert_notnone(var):
 
 
 def __pystr2bool(var):
-    if val[0].lower() == "t":
+    if var[0].lower() == "t":
         return True
     else:
         return False
@@ -183,6 +189,7 @@ fi
 '''
 
     s += '''
+# sampling cells and count matrix
 scripts_dir=%s
 cp  $scripts_dir/simulate/main.R  $work_dir
 cp  $scripts_dir/simulate/simulation.R  $work_dir
@@ -190,8 +197,40 @@ cp  $scripts_dir/simulate/simulation.R  $work_dir
 
     s += '''
 Rscript  $work_dir/%s  $work_dir
-
 ''' % (r_script, )
+
+    bam_dir = os.path.join(conf.out_dir, "bam")
+    s += '''
+# filter BAM
+res_dir=$work_dir
+
+bam_dir=$res_dir/bam
+if [ ! -e "$bam_dir" ]; then
+    mkdir -p $bam_dir
+fi
+
+out_bam_fn=$bam_dir/%s.out.bam
+flt_bam_fn=$bam_dir/%s.filtered.bam
+
+python  $scripts_dir/simulate/sam_filter_cells.py  \\
+  --inBAM  %s  \\
+  --cellTAG  %s  \\
+  --barcodes  $res_dir/barcodes/nonsampled_target_cells.tsv  \\
+  --outBAM  $out_bam_fn  \\
+  --filteredBAM  $flt_bam_fn 
+
+if [ $? -eq 0 ]; then
+    if [ -e "$out_bam_fn" ]; then
+        samtools index $out_bam_fn
+    fi
+    if [ -e "$flt_bam_fn" ]; then
+        samtools index $flt_bam_fn
+    fi
+else
+    echo "Error: filter BAM file failed."
+fi
+
+''' % (conf.sp, conf.sp, conf.bam_fn, conf.cell_tag)
     
     with open(fn, "w") as fp:
         fp.write(s)
@@ -205,6 +244,8 @@ def usage(fp = sys.stderr):
     s += "Options:\n"
     s += "  --sid STR              Sample ID.\n"
     s += "  --sp STR               Script prefix.\n"
+    s += "  --bam FILE             BAM file.\n"
+    s += "  --cellTAG STR          Cell barcode tag.\n"
     s += "  --dir10x DIR           Dir of 10x count matrix.\n"
     s += "  --targetCellTypes STR  Cell types to be sampled, semicolon separated.\n"
     s += "  --N INT                Number of cells (of --targetCellTypes) to be sampled.\n"
@@ -233,6 +274,7 @@ def main():
     conf = Config()
     opts, args = getopt.getopt(sys.argv[1:], "", [
         "sid=", "sp=",
+        "bam=", "cellTAG=",
         "dir10x=", "geneIsRow=",
         "cellAnno=", "targetCellTypes=",
         "N=", "perc=",
@@ -248,6 +290,8 @@ def main():
             op = op.lower()
         if op in   ("--sid"): conf.sid = val
         elif op in ("--sp"): conf.sp = val
+        elif op in ("--bam"): conf.bam_fn = val
+        elif op in ("--celltag"): conf.cell_tag = val
         elif op in ("--dir10x"): conf.dir_10x = val
         elif op in ("--geneisrow"): conf.gene_is_row = __pystr2bool(val)
         elif op in ("--cellanno"): conf.cell_anno_fn = val

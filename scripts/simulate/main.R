@@ -22,21 +22,21 @@ simu_main <- function(
     gene_is_row = gene_is_row
   )
 
-  print(sprintf("[I::%s] load 10x count matrix.", func)
+  print(sprintf("[I::%s] load 10x count matrix.", func))
   str(mtx)
 
   # load cell annotation
   cell_anno <- read.delim(cell_anno_fn, header = FALSE, stringsAsFactors = FALSE)
   colnames(cell_anno) <- c("cell", "cell_type")
   
-  print(sprintf("[I::%s] load cell annotation.", func)
+  print(sprintf("[I::%s] load cell annotation.", func))
   str(cell_anno)
 
   # load gene annotation
-  gene_anno <- read.table(gene_fn, header = FALSE, stringsAsFactors = FALSE)
+  gene_anno <- read.table(gene_anno_fn, header = FALSE, stringsAsFactors = FALSE)
   colnames(gene_anno) <- c("gene_id", "gene_name")
 
-  print(sprintf("[I::%s] load gene annotation.", func)
+  print(sprintf("[I::%s] load gene annotation.", func))
   str(gene_anno)
 
   # core part

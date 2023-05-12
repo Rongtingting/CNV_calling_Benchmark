@@ -20,6 +20,8 @@ out_dir=$result_dir
 python  $repo_scripts_dir/utils/gen_simu.py  \
   --sid  $sid   \
   --sp  $sp        \
+  --bam  $dat_root_dir/bam/raw_GX109-T1c/possorted_genome_bam.bam  \
+  --cellTAG  CB       \
   --dir10x  $dat_root_dir/matrix/helen_filtered_matrices    \
   --targetCellTypes  "immune cells"     \
   --N  $N              \

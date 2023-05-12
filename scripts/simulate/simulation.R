@@ -15,7 +15,7 @@ simulate <- function(
     cell_anno = cell_anno, 
     target_cell_types = target_cell_types,
     N = N, perc = perc, 
-    seed = seed, to_sort = sort_barcodes)
+    seed = seed, to_sort = sort_cells)
 
   print(sprintf("[I::%s] simulation sampling cells.", func))
   str(sample_res)
@@ -102,6 +102,8 @@ simu_sample_cells <- function(cell_anno, target_cell_types, N = NULL, perc = NUL
   seed = 123, to_sort = TRUE)
 {
   func <- "simu_sample_cells"
+
+  print(sprintf("[I::%s] cell_anno:", func))
   str(cell_anno)
   print(table(cell_anno$cell_type))
   
@@ -123,7 +125,7 @@ simu_sample_cells <- function(cell_anno, target_cell_types, N = NULL, perc = NUL
   set.seed(seed)
   sampled_target_cells <- sample(target_cells, n_cells_sampled)
   nonsampled_target_cells <- target_cells[! target_cells %in% sampled_target_cells]
-  sampled_cells <- cell_anno$cell[! cell_ano$cell %in% nonsampled_target_cells]
+  sampled_cells <- cell_anno$cell[! cell_anno$cell %in% nonsampled_target_cells]
   if (to_sort) {
     sampled_target_cells <- base::sort(sampled_target_cells)
     nonsampled_target_cells <- base::sort(nonsampled_target_cells)
@@ -131,7 +133,7 @@ simu_sample_cells <- function(cell_anno, target_cell_types, N = NULL, perc = NUL
   }
 
   cell_anno$sampled <- 1
-  cell_anno$sampled[cell_ano$cell %in% nonsampled_target_cells] <- 0
+  cell_anno$sampled[cell_anno$cell %in% nonsampled_target_cells] <- 0
   
   return(list(
     sampled_target_cells = sampled_target_cells,
@@ -202,7 +204,8 @@ simu_subset_matrix <- function(mtx, subset_cells = NULL, subset_genes = NULL,
 #'   1. `cell_fn` A string. the filename of cell barcodes.
 #'   2. `gene_fn` A string. the filename of genes. 
 #'   3. `mtx_fn` A string. the filename of sparse matrix.
-simu_save_matrix(mtx, gene_anno, out_dir, gene_is_row = TRUE) {
+simu_save_matrix <- function(mtx, gene_anno, out_dir, gene_is_row = TRUE)
+{
   func <- "simu_save_matrix"
 
   cell_fn <- sprintf("%s/barcodes.tsv", out_dir)
