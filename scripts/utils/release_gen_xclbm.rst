@@ -1,4 +1,8 @@
 
+Release v0.0.4 (12/05/2023)
+===========================
+- add `conda deactivate` to the end of qsub script.
+
 Release v0.0.3 (11/05/2023)
 ===========================
 - change the prefix of output scripts from ".run" to ".bm".

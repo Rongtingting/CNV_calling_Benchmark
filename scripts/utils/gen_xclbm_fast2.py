@@ -240,8 +240,14 @@ cp  $scripts_dir/assess/utils.R  $work_dir
 
     s += '''
 Rscript  $work_dir/%s  $work_dir
-
 ''' % (r_script, )
+
+    s += '''
+set +ux
+conda deactivate
+echo "All Done!"
+
+'''
     
     with open(fn, "w") as fp:
         fp.write(s)
@@ -371,7 +377,7 @@ def main():
 
 
 APP = "gen_xclbm_fast2.py"
-VERSION = "0.0.3"
+VERSION = "0.0.4"
 
 CONF_PLOT_DEC = 3
 
