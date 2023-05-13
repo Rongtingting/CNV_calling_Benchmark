@@ -190,9 +190,9 @@ fi
 
     s += '''
 scripts_dir=%s
-cp  $scripts_dir/assess/benchmark.R  $work_dir
-cp  $scripts_dir/assess/main.R  $work_dir
-cp  $scripts_dir/assess/utils.R  $work_dir
+cp  $scripts_dir/evaluate/benchmark.R  $work_dir
+cp  $scripts_dir/evaluate/main.R  $work_dir
+cp  $scripts_dir/evaluate/utils.R  $work_dir
 ''' % (conf.repo_scripts_dir, )
 
     s += '''
