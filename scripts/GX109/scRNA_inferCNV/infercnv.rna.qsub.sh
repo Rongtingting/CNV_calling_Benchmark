@@ -20,6 +20,7 @@ fi
 #  <sample id>     \
 #  <matrix dir>   \
 #  <anno file>     \
+#  <ref cell type>  \
 #  <gene file>     \
 #  <out dir>
 
@@ -27,6 +28,7 @@ fi
   GX109  \
   /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/helen_filtered_matrices  \
   /groups/cgsd/xianjie/data/dataset/GX109/scRNA/anno/GX109-T1c_scRNA_annotation_2column.tsv  \
+  "immune cells"     \
   /groups/cgsd/xianjie/data/refapp/xclone/hg38_gene_note_noheader_unique.txt  \
   $work_dir
 
