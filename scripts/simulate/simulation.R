@@ -167,7 +167,14 @@ simu_save_sample <- function(sample_res, out_dir)
   write.table(
     x = sample_res[["cell_anno"]],
     file = sprintf("%s/updated_cell_annotation.tsv", out_dir),
-    sep = "\t", quote = FALSE, row.names = FALSE, col.names = TRUE
+    sep = "\t", quote = TRUE, row.names = FALSE, col.names = TRUE
+  )
+
+  cell_anno <- sample_res[["cell_anno"]]
+  write.table(
+    x = cell_anno[cell_anno$sampled == 1, c("cell", "cell_type")],
+    file = sprintf("%s/sampled_cell_annotation_2column.tsv", out_dir),
+    sep = "\t", quote = TRUE, row.names = FALSE, col.names = FALSE
   )
 }
 
