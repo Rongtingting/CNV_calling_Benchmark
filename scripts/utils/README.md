@@ -1,10 +1,9 @@
 
-[gen_xclbm.py and gen_xclbm.run.sh]
-- to generate running scripts for xclbm tasks.
+gen_xclbm - automatically generate running scripts for CNV calling benchmarking.
+It includes several sub-units listed below:
 
-[gen_xclbm_fast1.py and gen_xclbm_fast1.run.sh]
-- to generate running scripts (version fast1) for xclbm tasks.
-
-[gen_xclbm_fast2.py and gen_xclbm_fast2.run.sh]
-- to generate running scripts (version fast2) for xclbm tasks.
+- gen_simu: scripts for data simulation.
+- gen_call: scripts for CNV calling by each tool.
+- gen_eval: scripts for performance evaluation.
+- gen_plot: scripts for plotting (fine tune).
 
