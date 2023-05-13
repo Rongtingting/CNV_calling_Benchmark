@@ -29,12 +29,12 @@ fi
 
 /usr/bin/time -v Rscript $work_dir/casper.rna.R \
   GX109  \
-  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA/helen_filtered_matrices  \
-  /groups/cgsd/xianjie/result/xclbm/v4/GX109/data/GX109-T1c_scRNA_annotation_2column.tsv  \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/helen_filtered_matrices  \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/anno/GX109-T1c_scRNA_annotation_2column.tsv  \
   "immune cells"    \
-  /groups/cgsd/xianjie/result/xclbm/res-v2/GX109_preprocess/GX109.helen_filtered.matrix.genes.hg38.hgnc.rds \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/GX109.helen_filtered.matrix.genes.hg38.hgnc.rds  \
   38    \
-  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA  \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix    \
   snp.BAF.tsv  \
   $work_dir
 
@@ -52,5 +52,5 @@ fi
 
 set +ux
 conda deactivate
-echo "[`basename $0`] All Done!"
+echo "All Done!"
 

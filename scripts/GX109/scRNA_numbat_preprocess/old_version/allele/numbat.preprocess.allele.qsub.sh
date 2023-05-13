@@ -16,7 +16,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
 
 #usage: pileup_and_phase.R [-h] --label LABEL --samples SAMPLES --bams BAMS
 #                          [--barcodes BARCODES] --gmap GMAP [--eagle EAGLE]
@@ -43,16 +42,16 @@ project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
 /usr/bin/time -v Rscript $work_dir/pileup_and_phase.R \
   --label GX109    \
   --samples GX109  \
-  --bams $project_dir/input/GX109/scRNA/cellranger/outs/possorted_genome_bam.bam  \
-  --barcodes $project_dir/input/GX109/scRNA/helen_filtered_matrices/barcodes.tsv  \
+  --bams /groups/cgsd/xianjie/data/dataset/GX109/scRNA/bam/raw_GX109-T1c/possorted_genome_bam.bam   \
+  --barcodes  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/helen_filtered_matrices/barcodes.tsv   \
   --gmap /groups/cgsd/xianjie/data/refapp/eagle/Eagle_v2.4.1/tables/genetic_map_hg38_withX.txt.gz \
   --eagle ~/.anaconda3/envs/XCLBM/bin/eagle  \
   --snpvcf /groups/cgsd/xianjie/data/refapp/numbat/genome1K.phase3.SNP_AF5e2.chr1toX.hg38.vcf.gz  \
   --paneldir /groups/cgsd/xianjie/data/refapp/numbat/1000G_hg38  \
-  --outdir $project_dir/output/GX109_numbat_preproce/allele  \
+  --outdir  $work_dir/allele  \
   --ncores 10
 
 set +ux
 conda deactivate
-echo [`basename $0`] All Done!
+echo All Done!
 

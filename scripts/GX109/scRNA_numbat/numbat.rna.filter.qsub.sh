@@ -1,9 +1,9 @@
 #!/bin/bash
-#PBS -N numbat_immune_filter
+#PBS -N numbat
 #PBS -q cgsd
 #PBS -l nodes=1:ppn=10,mem=200g,walltime=100:00:00
-#PBS -o numbat_immune_filter.out
-#PBS -e numbat_immune_filter.err
+#PBS -o numbat.out
+#PBS -e numbat.err
 
 source ~/.bashrc
 conda activate numbat

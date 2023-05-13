@@ -25,12 +25,12 @@ fi
 
 /usr/bin/time -v Rscript $work_dir/infercnv.rna.R \
   GX109  \
-  /groups/cgsd/xianjie/result/xclbm/data/GX109/scRNA/helen_filtered_matrices  \
-  /groups/cgsd/xianjie/result/xclbm/v4/GX109/data/GX109-T1c_scRNA_annotation_2column.tsv  \
-  /groups/cgsd/xianjie/result/xclbm/data/common/hg38_gene_note_noheader_unique.txt \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/helen_filtered_matrices  \
+  /groups/cgsd/xianjie/data/dataset/GX109/scRNA/anno/GX109-T1c_scRNA_annotation_2column.tsv  \
+  /groups/cgsd/xianjie/data/refapp/xclone/hg38_gene_note_noheader_unique.txt  \
   $work_dir
 
 set +ux
 conda deactivate
-echo [`basename $0`] All Done!"
+echo All Done!
 
