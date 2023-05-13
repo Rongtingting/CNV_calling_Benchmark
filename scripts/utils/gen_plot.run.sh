@@ -4,8 +4,8 @@
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
 result_dir=/home/xianjie/debug/test-xclbm/plot
-sid=GX109-T1c    # sample ID
-sp=GX109         # script prefix
+sid=GX109       
+sid_full=GX109-T1c 
 dat_root_dir=/home/xianjie/debug/test-xclbm/normal
 
 
@@ -18,7 +18,7 @@ echo -e "\nGenerate ROC-plot scripts for gene scale.\n"
 out_dir1=$result_dir/gene_roc
 python  $repo_scripts_dir/utils/gen_plot.py  \
   --sid  $sid   \
-  --sp  $sp        \
+  --sidFull  $sid_full        \
   --cnvScale  gene    \
   --datList  $dat_root_dir/gene_scale   \
   --metric  ROC        \
@@ -34,7 +34,7 @@ echo -e "\nGenerate PRC-plot scripts for gene scale.\n"
 out_dir2=$result_dir/gene_prc
 python  $repo_scripts_dir/utils/gen_plot.py  \
   --sid  $sid   \
-  --sp  $sp        \
+  --sidFull  $sid_full        \
   --cnvScale  gene    \
   --datList  $dat_root_dir/gene_scale   \
   --metric  PRC        \
@@ -50,7 +50,7 @@ echo -e "\nGenerate ROC-plot scripts for arm scale.\n"
 out_dir3=$result_dir/arm_roc
 python  $repo_scripts_dir/utils/gen_plot.py  \
   --sid  $sid   \
-  --sp  $sp        \
+  --sidFull  $sid_full   \
   --cnvScale  arm    \
   --datList  $dat_root_dir/arm_scale   \
   --metric  ROC        \
@@ -66,7 +66,7 @@ echo -e "\nGenerate PRC-plot scripts for arm scale.\n"
 out_dir4=$result_dir/arm_prc
 python  $repo_scripts_dir/utils/gen_plot.py  \
   --sid  $sid   \
-  --sp  $sp        \
+  --sidFull  $sid_full   \
   --cnvScale  arm    \
   --datList  $dat_root_dir/arm_scale   \
   --metric  PRC        \

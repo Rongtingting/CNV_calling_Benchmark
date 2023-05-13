@@ -4,12 +4,13 @@
 import getopt
 import os
 import sys
+from gen_conf import VERSION
 
 
 class Config:
     def __init__(self):
-        self.sid = None        # sample ID
-        self.sp = None         # script prefix
+        self.sid = None         
+        self.sid_full = None   # sample full ID
         self.cnv_scale = None  
         self.metric = None
 
@@ -25,7 +26,7 @@ class Config:
 
     def check_args(self):
         assert_n(self.sid)
-        assert_n(self.sp)
+        assert_n(self.sid_full)
         assert_n(self.cnv_scale)
         if self.cnv_scale not in ("gene", "arm"):
             raise ValueError
@@ -67,15 +68,15 @@ def __parse_xy(xy):
     return (x, y)
 
 
-def __get_out_prefix(conf):
+def __get_script_prefix(conf):
     metric = conf.metric.lower()
-    return "%s.%s_scale.%s.plot" % (conf.sp, conf.cnv_scale, metric)
+    return "%s.%s_scale.%s.plot" % (conf.sid, conf.cnv_scale, metric)
 
 
 def __get_roc_data(conf, cnv_type):
     dat_fn = os.path.join(conf.dat_list_dir, cnv_type, "result/s5_roc", 
         "%s.%s.%s_scale.roc.pre_plot_dat_list.list.rds" % (
-        conf.sp, cnv_type, conf.cnv_scale))
+        conf.sid, cnv_type, conf.cnv_scale))
     assert_e(dat_fn)
     return(dat_fn)
 
@@ -83,7 +84,7 @@ def __get_roc_data(conf, cnv_type):
 def __get_prc_data(conf, cnv_type):
     dat_fn = os.path.join(conf.dat_list_dir, cnv_type, "result/s6_prc", 
         "%s.%s.%s_scale.prc.pre_plot_dat_list.list.rds" % (
-        conf.sp, cnv_type, conf.cnv_scale))
+        conf.sid, cnv_type, conf.cnv_scale))
     assert_e(dat_fn)
     return(dat_fn)
 
@@ -116,7 +117,7 @@ setwd(work_dir)
 
 source("benchmark.R")
 source("utils.R")
-''' % (APP, VERSION, __get_out_prefix(conf))
+''' % (APP, VERSION, __get_script_prefix(conf))
 
     s += '''
 re_plot <- function(
@@ -141,9 +142,9 @@ re_plot <- function(
         (conf.xy_gain, conf.xy_loss, conf.xy_loh)):
         dat_list_fn = __get_roc_data(conf, cnv_type) if metric == "roc" else  \
             __get_prc_data(conf, cnv_type)
-        out_prefix = "%s.%s.%s_scale" % (conf.sp, cnv_type, cnv_scale)
+        out_prefix = "%s.%s.%s_scale" % (conf.sid, cnv_type, cnv_scale)
         plot_title = "%s %s Curve for %s" % (
-            conf.sid, metric.upper(), __format_cnv_type(cnv_type))
+            conf.sid_full, metric.upper(), __format_cnv_type(cnv_type))
         x, y = __parse_xy(xy)
         s += '''
 re_plot(
@@ -222,7 +223,7 @@ def usage(fp = sys.stderr):
     s += "\n" 
     s += "Options:\n"
     s += "  --sid STR              Sample ID.\n"
-    s += "  --sp STR               Script prefix.\n"
+    s += "  --sidFull STR          Sample Full ID.\n"
     s += "  --cnvScale STR         CNV scale, gene or arm.\n"
     s += "  --datList DIR          Dir containing previous data list.\n"
     s += "  --metric STR           Metric, ROC or PRC.\n"
@@ -248,7 +249,7 @@ def main():
 
     conf = Config()
     opts, args = getopt.getopt(sys.argv[1:], "", [
-        "sid=", "sp=", "cnvScale=",
+        "sid=", "sidFull=", "cnvScale=",
         "datList=",
         "metric=",
         "outdir=",
@@ -262,7 +263,7 @@ def main():
         if len(op) > 2:
             op = op.lower()
         if op in   ("--sid"): conf.sid = val
-        elif op in ("--sp"): conf.sp = val
+        elif op in ("--sidfull"): conf.sid_full = val
         elif op in ("--cnvscale"): conf.cnv_scale = val
         elif op in ("--datlist"): conf.dat_list_dir = val
         elif op in ("--metric"): conf.metric = val
@@ -281,13 +282,13 @@ def main():
     conf.check_args()
 
     # generate R scripts
-    r_script = "%s.R" % __get_out_prefix(conf)
+    r_script = "%s.R" % __get_script_prefix(conf)
     r_script_path = os.path.join(conf.out_dir, r_script)
     generate_r(r_script_path, conf)
     print("R scripts: %s\n" % str(r_script_path))
 
     # generate qsub scripts
-    qsub_script = "%s.qsub.sh" % __get_out_prefix(conf)
+    qsub_script = "%s.qsub.sh" % __get_script_prefix(conf)
     qsub_script_path = os.path.join(conf.out_dir, qsub_script)
     generate_qsub(qsub_script_path, conf, r_script)
     print("qsub scripts: %s\n" % str(qsub_script_path))
@@ -296,7 +297,6 @@ def main():
 
 
 APP = "gen_plot.py"
-VERSION = "0.0.2"
 
 CONF_PLOT_DEC = 3
 CONF_LEGEND_XMIN = 0.7

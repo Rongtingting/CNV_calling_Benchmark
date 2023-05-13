@@ -4,12 +4,12 @@
 import getopt
 import os
 import sys
+from gen_conf import VERSION
 
 
 class Config:
     def __init__(self):
-        self.sid = None        # sample ID
-        self.sp = None         # script prefix
+        self.sid = None      
 
         self.bam_fn = None
         self.cell_tag = None
@@ -32,7 +32,6 @@ class Config:
 
     def check_args(self):
         assert_n(self.sid)
-        assert_n(self.sp)
 
         assert_e(self.bam_fn)
         assert_n(self.cell_tag)
@@ -100,8 +99,8 @@ def __pylist2rstr(var):
     return s
 
 
-def __get_out_prefix(conf):
-    return conf.sp + ".simu"
+def __get_script_prefix(conf):
+    return conf.sid + ".simu"
 
 
 def generate_r(fn, conf):
@@ -116,7 +115,7 @@ setwd(work_dir)
 
 source("main.R")
 source("simulation.R")
-''' % (APP, VERSION, __get_out_prefix(conf))
+''' % (APP, VERSION, __get_script_prefix(conf))
 
     s += '''
 sid <- "%s"
@@ -230,7 +229,7 @@ else
     echo "Error: filter BAM file failed."
 fi
 
-''' % (conf.sp, conf.sp, conf.bam_fn, conf.cell_tag)
+''' % (conf.sid, conf.sid, conf.bam_fn, conf.cell_tag)
     
     with open(fn, "w") as fp:
         fp.write(s)
@@ -243,7 +242,6 @@ def usage(fp = sys.stderr):
     s += "\n" 
     s += "Options:\n"
     s += "  --sid STR              Sample ID.\n"
-    s += "  --sp STR               Script prefix.\n"
     s += "  --bam FILE             BAM file.\n"
     s += "  --cellTAG STR          Cell barcode tag.\n"
     s += "  --dir10x DIR           Dir of 10x count matrix.\n"
@@ -273,7 +271,7 @@ def main():
 
     conf = Config()
     opts, args = getopt.getopt(sys.argv[1:], "", [
-        "sid=", "sp=",
+        "sid=", 
         "bam=", "cellTAG=",
         "dir10x=", "geneIsRow=",
         "cellAnno=", "targetCellTypes=",
@@ -289,7 +287,6 @@ def main():
         if len(op) > 2:
             op = op.lower()
         if op in   ("--sid"): conf.sid = val
-        elif op in ("--sp"): conf.sp = val
         elif op in ("--bam"): conf.bam_fn = val
         elif op in ("--celltag"): conf.cell_tag = val
         elif op in ("--dir10x"): conf.dir_10x = val
@@ -312,13 +309,13 @@ def main():
     conf.check_args()
 
     # generate R scripts
-    r_script = "%s.R" % __get_out_prefix(conf)
+    r_script = "%s.R" % __get_script_prefix(conf)
     r_script_path = os.path.join(conf.out_dir, r_script)
     generate_r(r_script_path, conf)
     print("R scripts: %s\n" % str(r_script_path))
 
     # generate qsub scripts
-    qsub_script = "%s.qsub.sh" % __get_out_prefix(conf)
+    qsub_script = "%s.qsub.sh" % __get_script_prefix(conf)
     qsub_script_path = os.path.join(conf.out_dir, qsub_script)
     generate_qsub(qsub_script_path, conf, r_script)
     print("qsub scripts: %s\n" % str(qsub_script_path))
@@ -327,7 +324,6 @@ def main():
 
 
 APP = "gen_simu.py"
-VERSION = "0.0.1"
 
 CONF_GENE_IS_ROW = True
 CONF_SEED = 123

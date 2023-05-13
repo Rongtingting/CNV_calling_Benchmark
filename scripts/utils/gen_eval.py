@@ -1,18 +1,21 @@
-# gen_xclbm_fast1.py - generate running scripts (version fast1) for xclbm tasks.
+# gen_eval.py - generate running scripts for performance evaluation.
 
 
 import getopt
 import os
 import sys
+from gen_conf import VERSION
 
 
 class Config:
     def __init__(self):
         self.sid = None        # sample ID
-        self.sp = None         # script prefix
         self.cnv_scale = None  
 
-        self.dat_list_dir = None
+        self.casper_dir = None
+        self.copykat_dir = None
+        self.infercnv_dir = None
+        self.numbat_dir = None
         self.xclone_dir = None
 
         self.cell_anno_fn = None
@@ -31,12 +34,14 @@ class Config:
 
     def check_args(self):
         assert_n(self.sid)
-        assert_n(self.sp)
         assert_n(self.cnv_scale)
         if self.cnv_scale not in ("gene", "arm"):
             raise ValueError
 
-        assert_e(self.dat_list_dir)
+        assert_e(self.casper_dir)
+        assert_e(self.copykat_dir)
+        assert_e(self.infercnv_dir)
+        assert_e(self.numbat_dir)
         assert_e(self.xclone_dir)
 
         assert_e(self.cell_anno_fn)
@@ -74,20 +79,8 @@ def __get_xclone_prob_dir(conf, cnv_type):
         raise ValueError
 
 
-def __get_out_prefix(conf):
-    return conf.sp + ".bm.fast1"
-
-
-def __get_extracted_data(conf, cnv_type):
-    if cnv_type not in ("copy_gain", "copy_loss", "loh"):
-        raise ValueError
-    cnv_scale = conf.cnv_scale
-    dat_dir = os.path.join(conf.dat_list_dir, cnv_type, "result/s1_extract")
-    dat_list_fn = os.path.join(dat_dir, 
-        "%s.%s.%s_scale.extract.data_list.list.rds" % (
-        conf.sid, cnv_type, cnv_scale))
-    assert_e(dat_list_fn)
-    return dat_list_fn
+def __get_script_prefix(conf):
+    return conf.sid + ".eval"
 
 
 def __generate_r(fn, conf, cnv_type):
@@ -110,7 +103,7 @@ setwd(work_dir)
 source("benchmark.R")
 source("main.R")
 source("utils.R")
-''' % (APP, VERSION, __get_out_prefix(conf), conf.sid)
+''' % (APP, VERSION, __get_script_prefix(conf), conf.sid)
 
     s += '''
 sid <- "%s"
@@ -119,11 +112,33 @@ cnv_scale <- "%s"        # could be "gene" or "arm".
 ''' % (conf.sid, cnv_type, cnv_scale)
 
     xclone_dir = __get_xclone_prob_dir(conf, cnv_type)
-    dat_list_fn = __get_extracted_data(conf, cnv_type)
-    s += '''
-xclone_dir <- "%s"
-dat_list_fn <- "%s"
-''' % (xclone_dir, dat_list_fn)
+    if cnv_type in ("copy_gain", "copy_loss"):
+        s += '''
+method_list <- c("casper", "copykat", "infercnv", "numbat", "xclone")
+method_sub_list <- c("casper", "copykat", "infercnv", "numbat", "xclone")
+mtx_type_list <- c("expr", "expr", "expr", "prob", "prob")
+dat_dir_list <- c(
+  "%s",
+  "%s",
+  "%s",
+  "%s",
+  "%s"
+)
+''' % (conf.casper_dir, conf.copykat_dir, conf.infercnv_dir, conf.numbat_dir, 
+       xclone_dir)
+
+    else:
+        s += '''
+method_list <- c("casper", "casper", "numbat", "xclone")
+method_sub_list <- c("casper_median", "casper_medianDev", "numbat", "xclone")
+mtx_type_list <- c("baf", "baf", "prob", "prob")
+dat_dir_list <- c(
+  "%s",
+  "%s",
+  "%s",
+  "%s"
+)
+''' % (conf.casper_dir, conf.casper_dir, conf.numbat_dir, xclone_dir)
 
     s += '''
 cell_anno_fn <- "%s"
@@ -133,11 +148,11 @@ out_dir <- "result"
 ''' % (conf.cell_anno_fn, conf.gene_anno_fn, conf.truth_fn)
 
     s += '''
-bm_main_fast1(
-  sid, cnv_type, cnv_scale,
-  xclone_dir, dat_list_fn,
+bm_main(
+  sid, cnv_type, cnv_scale, 
+  method_list, method_sub_list, mtx_type_list, dat_dir_list,
   cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
-  overlap_mode = "customize", filter_func = NULL,
+  overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
   plot_dec = %d, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
@@ -153,7 +168,7 @@ def generate_r(conf):
     out_fn_list = []
     for cnv_type, out_dir in zip(("copy_gain", "copy_loss", "loh"),
         (conf.copy_gain_dir, conf.copy_loss_dir, conf.loh_dir)):
-        out_fn = os.path.join(out_dir, "%s.R" % __get_out_prefix(conf))
+        out_fn = os.path.join(out_dir, "%s.R" % __get_script_prefix(conf))
         __generate_r(out_fn, conf, cnv_type)
         out_fn_list.append(out_fn)
     return out_fn_list
@@ -199,14 +214,14 @@ cp  $scripts_dir/assess/utils.R  $work_dir
     s += '''
 Rscript  $work_dir/%s  $work_dir
 ''' % (r_script, )
-
+    
     s += '''
 set +ux
 conda deactivate
 echo "All Done!"
 
 '''
-    
+
     with open(fn, "w") as fp:
         fp.write(s)
 
@@ -215,8 +230,8 @@ def generate_qsub(conf):
     out_fn_list = []
     for cnv_type, out_dir in zip(("copy_gain", "copy_loss", "loh"),
         (conf.copy_gain_dir, conf.copy_loss_dir, conf.loh_dir)):
-        out_fn = os.path.join(out_dir, "%s.qsub.sh" % __get_out_prefix(conf))
-        r_script = "%s.R" %  __get_out_prefix(conf)
+        out_fn = os.path.join(out_dir, "%s.qsub.sh" % __get_script_prefix(conf))
+        r_script = "%s.R" %  __get_script_prefix(conf)
         __generate_qsub(out_fn, conf, cnv_type, r_script)
         out_fn_list.append(out_fn)
     return out_fn_list
@@ -233,7 +248,7 @@ def generate_run(conf):
         s += '''
 cd %s
 qsub %s.qsub.sh
-''' % (run_dir, __get_out_prefix(conf))
+''' % (run_dir, __get_script_prefix(conf))
 
     s += '''
 echo All Done!
@@ -253,11 +268,13 @@ def usage(fp = sys.stderr):
     s += "\n" 
     s += "Options:\n"
     s += "  --sid STR              Sample ID.\n"
-    s += "  --sp STR               Script prefix.\n"
     s += "  --cnvScale STR         CNV scale, gene or arm.\n"
     s += "  --outdir DIR           Output dir.\n"
-    s += "  --datList DIR          Dir containing previous data list.\n"
     s += "  --xclone DIR           XClone dir.\n"
+    s += "  --numbat DIR           Numbat dir.\n"
+    s += "  --casper DIR           CaSpER dir.\n"
+    s += "  --copykat DIR          CopyKAT dir.\n"
+    s += "  --infercnv DIR         InferCNV dir.\n"
     s += "  --truth FILE           Ground truth file.\n"
     s += "  --cellAnno FILE        Cell annotation file.\n"
     s += "  --geneAnno FILE        Gene annotation file.\n"
@@ -279,9 +296,10 @@ def main():
 
     conf = Config()
     opts, args = getopt.getopt(sys.argv[1:], "", [
-        "sid=", "sp=", "cnvScale=",
+        "sid=", "cnvScale=",
         "outdir=",
-        "datList=", "xclone=", 
+        "xclone=", "numbat=",
+        "casper=", "copykat=", "infercnv=",
         "truth=", 
         "cellAnno=", "geneAnno=", 
         "repoScripts=",
@@ -293,11 +311,13 @@ def main():
         if len(op) > 2:
             op = op.lower()
         if op in   ("--sid"): conf.sid = val
-        elif op in ("--sp"): conf.sp = val
         elif op in ("--cnvscale"): conf.cnv_scale = val
         elif op in ("--outdir"): conf.out_dir = val
-        elif op in ("--datlist"): conf.dat_list_dir = val
         elif op in ("--xclone"): conf.xclone_dir = val
+        elif op in ("--numbat"): conf.numbat_dir = val
+        elif op in ("--casper"): conf.casper_dir = val
+        elif op in ("--copykat"): conf.copykat_dir = val
+        elif op in ("--infercnv"): conf.infercnv_dir = val
         elif op in ("--truth"): conf.truth_fn = val
         elif op in ("--cellanno"): conf.cell_anno_fn = val
         elif op in ("--geneanno"): conf.gene_anno_fn = val
@@ -339,8 +359,7 @@ def main():
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
 
-APP = "gen_xclbm_fast1.py"
-VERSION = "0.0.4"
+APP = "gen_eval.py"
 
 CONF_PLOT_DEC = 3
 

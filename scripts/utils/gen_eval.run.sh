@@ -1,5 +1,5 @@
 #!/bin/bash
-# gen_xclbm.run.sh
+# gen_eval.run.sh
 
 
 anno_dir=/groups/cgsd/xianjie/data/dataset/GX109/scRNA/anno
@@ -14,11 +14,10 @@ if [ ! -e "$result_dir" ]; then
 fi
 
 
-echo -e "\nGenerate xclbm scripts for gene scale.\n"
+echo -e "\nGenerate evaluation scripts for gene scale.\n"
 out_dir=$result_dir/gene_scale
-python  $repo_scripts_dir/utils/gen_xclbm.py  \
+python  $repo_scripts_dir/utils/gen_eval.py  \
   --sid  GX109   \
-  --sp  GX109        \
   --cnvScale  gene    \
   --outdir  $out_dir    \
   --xclone  /groups/cgsd/xianjie/result/xclbm/GX109/GX109_5400_xclone_0403/extracted_data \
@@ -35,11 +34,10 @@ python  $repo_scripts_dir/utils/gen_xclbm.py  \
 chmod u+x $out_dir/run.sh
 
 
-echo -e "\nGenerate xclbm scripts for arm scale.\n"
+echo -e "\nGenerate evaluation scripts for arm scale.\n"
 out_dir=$result_dir/arm_scale
-python  $repo_scripts_dir/utils/gen_xclbm.py  \
+python  $repo_scripts_dir/utils/gen_eval.py  \
   --sid  GX109   \
-  --sp  GX109        \
   --cnvScale  arm    \
   --outdir  $out_dir    \
   --xclone  /groups/cgsd/xianjie/result/xclbm/GX109/GX109_5400_xclone_0403/extracted_data_merge_chr_arm    \
