@@ -24,7 +24,9 @@ python  $repo_scripts_dir/utils/gen_eval_fast2.py  \
   --repoScripts  $repo_scripts_dir   \
   --plotDec  4
 
-chmod u+x $out_dir/run.sh
+if [ -e "$out_dir/run.sh" ]; then
+    chmod u+x $out_dir/run.sh
+fi
 
 
 echo -e "\nGenerate evaluation scripts for arm scale.\n"
@@ -39,5 +41,7 @@ python  $repo_scripts_dir/utils/gen_eval_fast2.py  \
   --repoScripts  $repo_scripts_dir   \
   --plotDec  4
 
-chmod u+x $out_dir/run.sh
+if [ -e "$out_dir/run.sh" ]; then
+    chmod u+x $out_dir/run.sh
+fi
 
