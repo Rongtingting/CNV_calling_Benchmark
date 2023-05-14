@@ -228,9 +228,15 @@ if [ $? -eq 0 ]; then
 else
     echo "Error: filter BAM file failed."
 fi
-
 ''' % (conf.sid, conf.sid, conf.bam_fn, conf.cell_tag)
-    
+
+    s += '''
+set +ux
+conda deactivate
+echo "All Done!"
+
+'''
+
     with open(fn, "w") as fp:
         fp.write(s)
 
