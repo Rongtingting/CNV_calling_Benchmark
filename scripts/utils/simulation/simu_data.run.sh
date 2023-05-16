@@ -1,5 +1,5 @@
 #!/bin/bash
-# gen_simu.run.sh
+# simu_data.run.sh
 
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
@@ -16,7 +16,7 @@ fi
 
 echo -e "\nGenerate simulation scripts.\n"
 out_dir=$result_dir
-python  $repo_scripts_dir/utils/gen_simu.py  \
+python  $repo_scripts_dir/utils/simulation/simu_data.py  \
   --sid  $sid   \
   --bam  $dat_root_dir/bam/raw_GX109-T1c/possorted_genome_bam.bam  \
   --cellTAG  CB       \

@@ -1,10 +1,10 @@
-# gen_simu.py - generate running scripts for data simulation.
+# simu_data.py - generate running scripts for data simulation.
 
 
 import getopt
 import os
 import sys
-from gen_conf import VERSION
+from simu_conf import VERSION
 
 
 class Config:
@@ -329,7 +329,7 @@ def main():
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
 
-APP = "gen_simu.py"
+APP = "simu_data.py"
 
 CONF_GENE_IS_ROW = True
 CONF_SEED = 123
