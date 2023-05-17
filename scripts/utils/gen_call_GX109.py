@@ -58,6 +58,10 @@ class Config:
         self.dir_xclone_post_phase = None
         self.dir_xclone_basefc = None
 
+        self.pbs_ppn = 10
+        self.pbs_mem = 200     # g
+        self.pbs_time = 100    # hour
+
 
     def check_args(self):
         assert_n(self.sid)
@@ -155,10 +159,10 @@ def gen_casper_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -244,10 +248,10 @@ def gen_copykat_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -306,10 +310,10 @@ def gen_infercnv_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -382,10 +386,10 @@ def gen_numbat_preprocess_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -499,10 +503,10 @@ def gen_numbat_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -570,10 +574,10 @@ def gen_xclone_pre_phase_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -627,10 +631,10 @@ def gen_xclone_post_phase_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
@@ -686,10 +690,10 @@ def gen_xclone_basefc_qsub(fn, conf):
 
     s += '''#PBS -N %s
 #PBS -q cgsd
-#PBS -l nodes=1:ppn=20,mem=%dg,walltime=100:00:00
+#PBS -l nodes=1:ppn=%d,mem=%dg,walltime=%d:00:00
 #PBS -o %s.out
 #PBS -e %s.err
-''' % (prefix, CONF_QSUB_MEM, prefix, prefix)
+''' % (prefix, conf.pbs_ppn, conf.pbs_mem, conf.pbs_time, prefix, prefix)
 
     s += '''
 source ~/.bashrc
