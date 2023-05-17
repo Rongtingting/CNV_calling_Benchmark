@@ -536,7 +536,7 @@ cp  %s/GX109/scRNA_numbat/numbat.rna.R  $work_dir
 
 /usr/bin/time -v Rscript $work_dir/numbat.rna.R \\
   %s/%s.ref_filtered.count.mtx.rds  \\
-  %s/%s.ref.gene_by_cell_type.mtx.rds  \\
+  %s/%s.ref.gene_by_celltype.mtx.rds  \\
   %s/%s.ref_filtered.allele.dataframe.rds  \\
   %s  \\
   %s  \\
