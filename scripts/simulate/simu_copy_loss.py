@@ -251,7 +251,7 @@ def simu_loss(in_sam, out_sam,
     
     n_umi_c0_a0 = n_umi_c0_a1 = n_umi_c0_amb = 0
     n_umi_c1_a0 = n_umi_c1_a1 = n_umi_c1_amb = 0
-    n_umi_del = {}
+    umi_del = {}
 
     for read in in_sam.fetch():
         read_chrom = read.reference_name
@@ -281,19 +281,19 @@ def simu_loss(in_sam, out_sam,
             continue
 
         clone_id = 0 if cb in clone0 else 1   # cell is in target clone.
-        if cb not in n_umi_del:
-            n_umi_del[cb] = {
+        if cb not in umi_del:
+            umi_del[cb] = {
                 "clone_id": clone_id,
-                "a0": 0,
-                "a1": 0,
-                "amb": 0
+                "a0": set(),
+                "a1": set(),
+                "amb": set()
             }
 
         cell_umi = ale_umi[cb]
         if umi in cell_umi[0]:    # UMI is on allele 0.
             if clone_id == 0:
                 n_umi_c0_a0 += 1
-                n_umi_del[cb]["a0"] += 1
+                umi_del[cb]["a0"].add(umi)
             else:
                 n_umi_c1_a0 += 1
                 out_sam.write(read)
@@ -303,19 +303,19 @@ def simu_loss(in_sam, out_sam,
                 out_sam.write(read)
             else:
                 n_umi_c1_a1 += 1
-                n_umi_del[cb]["a1"] += 1
+                umi_del[cb]["a1"].add(umi)
         else:                     # ambiguous UMI
             rand_f = np.random.rand()
             if clone_id == 0:
                 n_umi_c0_amb += 1
                 if rand_f < prob0:
-                    n_umi_del[cb]["amb"] += 1
+                    umi_del[cb]["amb"].add(umi)
                 else:
                     out_sam.write(read)
             else:
                 n_umi_c1_amb += 1
                 if rand_f < prob1:
-                    n_umi_del[cb]["amb"] += 1
+                    umi_del[cb]["amb"].add(umi)
                 else:
                     out_sam.write(read)
 
@@ -323,6 +323,15 @@ def simu_loss(in_sam, out_sam,
         func, n_umi_c0_a0, n_umi_c0_a1, n_umi_c0_amb))
     print("[I::%s] #umi_c1_a0=%d; #umi_c1_a1=%d; #umi_c1_amb=%d." % (
         func, n_umi_c1_a0, n_umi_c1_a1, n_umi_c1_amb))
+
+    n_umi_del = {}
+    for cell in umi_del.keys():
+        n_umi_del[cell] = {
+            "clone_id": umi_del[cell]["clone_id"],
+            "a0": len(umi_del[cell]["a0"]),
+            "a1": len(umi_del[cell]["a1"]),
+            "amb": len(umi_del[cell]["amb"])
+        }
 
     return (n_umi_del)
 
