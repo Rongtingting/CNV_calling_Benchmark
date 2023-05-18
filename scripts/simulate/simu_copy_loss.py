@@ -1,6 +1,7 @@
 # simu_loss.py - data simulation that two clones harbor copy loss of different alleles.
 
 
+import getopt
 import numpy as np
 import os
 import pysam
@@ -38,7 +39,7 @@ class Config:
 
         assert_e(self.bam_fn)
         assert_n(self.chrom)
-        self.chrom = __format_chrom(self.chrom)
+        self.chrom = format_chrom(self.chrom)
         assert_n(self.cell_tag)
         assert_n(self.umi_tag)
 
@@ -103,7 +104,7 @@ def get_clones(cells, frac0, seed = 123):
     return (clone0, clone1)
 
 
-def __format_chrom(chrom):
+def format_chrom(chrom):
     return chrom[3:] if chrom.startswith("chr") else chrom
 
 
@@ -125,7 +126,7 @@ def load_gene_anno(fn):
                 print("[W::%s] '%s' is duplicate." % (func, name))
                 continue
             gene_dict[name] = {
-                "chrom": __format_chrom(chrom),
+                "chrom": format_chrom(chrom),
                 "start": start,
                 "end": end,
             }
@@ -169,8 +170,12 @@ def load_global_phase(fn):
     func = "load_global_phase"
 
     phase = {}
+    nl = 0
     with open(fn, "r") as fp:
         for line in fp:
+            nl += 1
+            if nl == 1:
+                continue
             items = line.strip().split("\t")
             gene, flip = items[0], items[-1]
             flip = True if flip.strip().lower() == "true" else False
@@ -240,7 +245,7 @@ def simu_loss(in_sam, out_sam,
 
     func = "simu_loss"
 
-    chrom = __format_chrom(chrom)
+    chrom = format_chrom(chrom)
 
     np.random.seed(seed)
     
@@ -253,7 +258,7 @@ def simu_loss(in_sam, out_sam,
         if not read_chrom:
             out_sam.write(read)
             continue
-        read_chrom = __format_chrom(read_chrom)
+        read_chrom = format_chrom(read_chrom)
         if read_chrom != chrom:    # UMI is not on target chrom.
             out_sam.write(read)
             continue
@@ -440,7 +445,7 @@ def main():
     gene_dict_all = load_gene_anno(conf.gene_anno_fn)
     gene_dict = {}
     for gene in gene_dict_all.keys():
-        chrom = __format_chrom(gene_dict_all[gene]["chrom"])
+        chrom = format_chrom(gene_dict_all[gene]["chrom"])
         if chrom == conf.chrom:
             gene_dict[gene] = gene_dict_all[gene]
 
@@ -476,7 +481,7 @@ def main():
 
     in_sam = pysam.AlignmentFile(conf.bam_fn, "rb")
     out_sam_fn = os.path.join(conf.out_dir, "%s.out.bam" % conf.sid)
-    out_sam = pysam.AlignmentFile(conf.out_sam_fn, "wb")
+    out_sam = pysam.AlignmentFile(out_sam_fn, "wb", template = in_sam)
 
     n_umi_del = simu_loss(
         in_sam = in_sam,
