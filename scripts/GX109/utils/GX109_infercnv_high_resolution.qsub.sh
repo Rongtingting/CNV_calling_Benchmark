@@ -1,7 +1,4 @@
 #!/bin/bash
-# Author:Rongting 
-# Date:2021-06-07
-# contact:rthuang@connect.hku.hk
 #PBS -N gx109-infercnv
 #PBS -q cgsd
 #PBS -l nodes=1:ppn=20,mem=200g,walltime=400:00:00
