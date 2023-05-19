@@ -1,7 +1,4 @@
 #!/bin/bash
-# Author:Rongting 
-# Date:2021-06-07
-# contact:rthuang@connect.hku.hk
 #PBS -N tnbc1-copykat
 #PBS -q cgsd
 #PBS -l nodes=1:ppn=20,mem=200g,walltime=400:00:00
@@ -19,8 +16,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
-
 #Rscript $work_dir/copykat.rna.R \
 #  <sample id>     \
 #  <expression file>   \
@@ -31,11 +26,11 @@ project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
 
 /usr/bin/time -v Rscript $work_dir/copykat.rna.R \
   TNBC1  \
-  $project_dir/input/TNBC1/scRNA/TNBC1.combined.expr.tsv \
-  $project_dir/output/TNBC1_preprocess/TNBC1.combined.cell.anno.tsv \
+  /groups/cgsd/xianjie/data/dataset/TNBC1/matrix/TNBC1.combined.expr.tsv \
+  /groups/cgsd/xianjie/data/dataset/TNBC1/anno/TNBC1.combined.cell.anno.tsv \
   N  \
   20   \
-  $project_dir/output/TNBC1_copykat_n
+  $work_dir/TNBC1_copykat_n
 
 set +ux
 conda deactivate

@@ -16,8 +16,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
-
 #usage: pileup_and_phase.R [-h] --label LABEL --samples SAMPLES --bams BAMS
 #                          [--barcodes BARCODES] --gmap GMAP [--eagle EAGLE]
 #                          --snpvcf SNPVCF --paneldir PANELDIR --outdir OUTDIR
@@ -43,8 +41,8 @@ project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
 /usr/bin/time -v Rscript $work_dir/pileup_and_phase.R \
   --label TNBC1    \
   --samples TNBC1  \
-  --bams /groups/cgsd/xianjie/data/dataset/TNBC1/scRNA/BAM_TNBC1.bam  \
-  --barcodes /groups/cgsd/xianjie/data/dataset/TNBC1/scRNA/new_barcodes.txt  \
+  --bams /groups/cgsd/xianjie/data/dataset/TNBC1/bam/BAM_TNBC1.bam  \
+  --barcodes /groups/cgsd/xianjie/data/dataset/TNBC1/bam/new_barcodes.txt  \
   --gmap /groups/cgsd/xianjie/data/refapp/eagle/Eagle_v2.4.1/tables/genetic_map_hg38_withX.txt.gz \
   --eagle ~/.anaconda3/envs/XCLBM/bin/eagle  \
   --snpvcf /groups/cgsd/xianjie/data/refapp/numbat/genome1K.phase3.SNP_AF5e2.chr1toX.hg38.vcf.gz  \

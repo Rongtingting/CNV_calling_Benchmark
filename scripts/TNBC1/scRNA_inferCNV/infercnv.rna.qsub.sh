@@ -1,7 +1,4 @@
 #!/bin/bash
-# Author:Rongting 
-# Date:2021-06-07
-# contact:rthuang@connect.hku.hk
 #PBS -N tnbc1-infercnv
 #PBS -q cgsd
 #PBS -l nodes=1:ppn=20,mem=200g,walltime=400:00:00
@@ -19,8 +16,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
-
 #Rscript $work_dir/infercnv.rna.R \
 #  <sample id>     \
 #  <matrix file>   \
@@ -30,10 +25,10 @@ project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
 
 /usr/bin/time -v Rscript $work_dir/infercnv.rna.R \
   TNBC1  \
-  $project_dir/input/TNBC1/scRNA/TNBC1.combined.expr.tsv \
-  $project_dir/output/TNBC1_preprocess/TNBC1.combined.cell.anno.tsv \
-  $project_dir/input/common/hg38_gene_note_noheader_unique.txt \
-  $project_dir/output/TNBC1_infercnv
+  /groups/cgsd/xianjie/data/dataset/TNBC1/matrix/TNBC1.combined.expr.tsv \
+  /groups/cgsd/xianjie/data/dataset/TNBC1/anno/TNBC1.combined.cell.anno.tsv \
+  /groups/cgsd/xianjie/data/refapp/xclone/hg38_gene_note_noheader_unique.txt \
+  $work_dir/TNBC1_infercnv
 
 set +ux
 conda deactivate
