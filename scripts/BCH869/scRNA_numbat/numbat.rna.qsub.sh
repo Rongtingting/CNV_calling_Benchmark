@@ -6,7 +6,7 @@
 #PBS -e BCH_numbat.err
 
 source ~/.bashrc
-conda activate XCLBM
+conda activate numbat
 
 # run `set` after `source` & `conda activate` as the source file has an unbound variable
 set -eux  
@@ -15,8 +15,6 @@ work_dir=`cd $(dirname $0) && pwd`
 if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
-
-data_dir=/groups/cgsd/xianjie/result/xclbm/res-v3/BCH869_numbat_preprocess
 
 #Rscript $work_dir/numbat.rna.R  \
 #  <count matrix>  \
@@ -27,9 +25,9 @@ data_dir=/groups/cgsd/xianjie/result/xclbm/res-v3/BCH869_numbat_preprocess
 #  <ncores>
 
 /usr/bin/time -v Rscript $work_dir/numbat.rna.R  \
-  $data_dir/expr/BCH869.numbat.normal_filtered.count.mtx.rds  \
-  $data_dir/expr_ref/BCH869.numbat.ref.gene_by_cell_type.mtx.rds  \
-  $data_dir/allele_ref/BCH869.numbat.normal_filtered.allele.dataframe.rds  \
+  $work_dir/expr/BCH869.numbat.normal_filtered.count.mtx.rds  \
+  $work_dir/expr_ref/BCH869.numbat.ref.gene_by_celltype.mtx.rds  \
+  $work_dir/allele_ref/BCH869.numbat.normal_filtered.allele.dataframe.rds  \
   $work_dir   \
   BCH869.numbat  \
   10

@@ -23,8 +23,8 @@ fi
 
 /usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr_ref.R  \
   $work_dir/../sim_matrix  \
-  $work_dir/../BCH869.numbat.3.ref.cell.anno.tsv  \
-  $work_dir/../../expr_ref/BCH869.numbat.ref.gene_by_cell_type.mtx.rds
+  $work_dir/../BCH869.numbat.3ref.cell.anno.tsv  \
+  $work_dir/../../expr_ref/BCH869.numbat.ref.gene_by_celltype.mtx.rds
 
 set +ux
 conda deactivate

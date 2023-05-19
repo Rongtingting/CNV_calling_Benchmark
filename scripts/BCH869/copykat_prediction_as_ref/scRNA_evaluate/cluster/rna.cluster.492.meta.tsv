@@ -1,6 +1,0 @@
-tool	in_dir	out_id
-casper	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_casper_diploid_492	casper_diploid
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_copykat_diploid_492	copykat_diploid
-copykat	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_copykat_null_492	copykat_null
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_infercnv_492/BCH869_diploid	infercnv_diploid
-infercnv	/groups/cgsd/xianjie/xclbm/res-v1/BCH869_infercnv_492/BCH869_NULL	infercnv_null

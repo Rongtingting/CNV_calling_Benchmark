@@ -1,7 +1,4 @@
 #!/bin/bash
-# Author:Rongting 
-# Date:2021-06-07
-# contact:rthuang@connect.hku.hk
 #PBS -N bch869-copykat
 #PBS -q cgsd
 #PBS -l nodes=1:ppn=20,mem=200g,walltime=400:00:00
@@ -19,8 +16,6 @@ if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
 
-project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
-
 #Rscript $work_dir/copykat.rna.R \
 #  <sample id>     \
 #  <expression file>   \
@@ -31,35 +26,11 @@ project_dir=~/projects/xclone/xcl_bm/CNV_calling_Benchmark/v1
 
 /usr/bin/time -v Rscript $work_dir/copykat.rna.R \
   BCH869  \
-  $project_dir/input/BCH869/scRNA/BCH869.combined.expr.csv \
-  NULL  \
-  NULL  \
-  20   \
-  $project_dir/output/BCH869_copykat_null
-
-/usr/bin/time -v Rscript $work_dir/copykat.rna.R \
-  BCH869  \
-  $project_dir/output/BCH869_preprocess/BCH869.492.expr.csv \
-  NULL  \
-  NULL  \
-  20   \
-  $project_dir/output/BCH869_copykat_null_492
-
-/usr/bin/time -v Rscript $work_dir/copykat.rna.R \
-  BCH869  \
-  $project_dir/input/BCH869/scRNA/BCH869.combined.expr.csv \
-  $project_dir/output/BCH869_preprocess/BCH869.636.cell.anno2.tsv \
+  /groups/cgsd/xianjie/data/dataset/BCH869/matrix/BCH869.492.expr.csv  \
+  /groups/cgsd/xianjie/data/dataset/BCH869/anno/BCH869.492.cell.anno.2type.tsv  \
   Normal  \
   20   \
-  $project_dir/output/BCH869_copykat_normal
-
-/usr/bin/time -v Rscript $work_dir/copykat.rna.R \
-  BCH869  \
-  $project_dir/output/BCH869_preprocess/BCH869.492.expr.csv \
-  $project_dir/output/BCH869_preprocess/BCH869.492.cell.anno2.tsv \
-  Normal  \
-  20   \
-  $project_dir/output/BCH869_copykat_normal_492
+  $work_dir/BCH869_copykat_normal_492
 
 set +ux
 conda deactivate

@@ -6,7 +6,7 @@
 #PBS -e numbat_preprocess_allele.err
 
 source ~/.bashrc
-conda activate XCLBM
+conda activate numbat
 
 # run `set` after `source` & `conda activate` as the source file has an unbound variable
 set -eux  
@@ -15,8 +15,6 @@ work_dir=`cd $(dirname $0) && pwd`
 if [ -n "$PBS_O_WORKDIR" ]; then
   work_dir=$PBS_O_WORKDIR
 fi
-
-project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
 
 #usage: pileup_and_phase.R [-h] --label LABEL --samples SAMPLES --bams BAMS
 #                          [--barcodes BARCODES] --gmap GMAP [--eagle EAGLE]
@@ -43,8 +41,8 @@ project_dir=~/projects/xclbm/CNV_calling_Benchmark/v2
 /usr/bin/time -v Rscript $work_dir/pileup_and_phase.R \
   --label BCH869    \
   --samples BCH869  \
-  --bams $work_dir/BCH869.492.bam.lst  \
-  --barcodes $work_dir/BCH869.492.id.lst  \
+  --bams  /groups/cgsd/xianjie/data/dataset/BCH869/bam/BCH869.492.bam.lst  \
+  --barcodes  /groups/cgsd/xianjie/data/dataset/BCH869/bam/BCH869.492.id.lst  \
   --gmap /groups/cgsd/xianjie/data/refapp/eagle/Eagle_v2.4.1/tables/genetic_map_hg19_withX.txt.gz \
   --eagle ~/.anaconda3/envs/XCLBM/bin/eagle  \
   --snpvcf /groups/cgsd/xianjie/data/refapp/numbat/genome1K.phase3.SNP_AF5e2.chr1toX.hg19.vcf.gz  \

@@ -26,9 +26,9 @@ fi
 
 /usr/bin/time -v Rscript $work_dir/numbat.preprocess.expr.R  \
   $work_dir/../sim_matrix   \
-  $work_dir/../BCH869.numbat.3.ref.cell.anno.tsv  \
+  $work_dir/../BCH869.numbat.3ref.cell.anno.tsv  \
   normal  \
-  /groups/cgsd/xianjie/result/xclbm/res-v3/BCH869_numbat_preprocess/expr  \
+  $work_dir/expr  \
   BCH869.numbat  \
   True
 
