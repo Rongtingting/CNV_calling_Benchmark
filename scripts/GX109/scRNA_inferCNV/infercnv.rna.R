@@ -29,7 +29,7 @@ library(infercnv)
 gex_mtx <- Seurat::Read10X(data.dir = matrix_dir)
 
 ### parse cell types
-anno <- read.table(anno_file, sep = "\t", header = F, stringsAsFactors = F)
+#anno <- read.table(anno_file, sep = "\t", header = F, stringsAsFactors = F)
 
 infercnv_obj1 <- CreateInfercnvObject(raw_counts_matrix=gex_mtx,
                                       annotations_file=anno_file,

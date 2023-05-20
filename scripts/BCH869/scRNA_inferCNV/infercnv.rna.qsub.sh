@@ -20,6 +20,7 @@ fi
 #  <sample id>     \
 #  <matrix file>   \
 #  <anno file>     \
+#  <ref cell type>  \
 #  <gene file>     \
 #  <out dir>
 
@@ -27,6 +28,7 @@ fi
   BCH869  \
   /groups/cgsd/xianjie/data/dataset/BCH869/matrix/BCH869.492.expr.csv  \
   /groups/cgsd/xianjie/data/dataset/BCH869/anno/BCH869.492.cell.anno.2type.tsv  \
+  "Normal"  \
   /groups/cgsd/xianjie/data/refapp/xclone/hg19.cellranger.genes.sort.uniq.tsv \
   $work_dir/BCH869_infercnv_492
 

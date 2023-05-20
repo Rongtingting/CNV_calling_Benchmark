@@ -30,7 +30,8 @@ library(copykat)
 exp_mtx <- read.csv(exp_file, stringsAsFactor=F, row.names = 1)  # gene x cell matrix
 control <- ""
 if (control_cell_type != "NULL") {
-  cell_anno <- read.delim(cell_anno_fn, stringsAsFactors = F)
+  cell_anno <- read.delim(cell_anno_fn, header = F, stringsAsFactors = F)
+  colnames(cell_anno) <- c("cell_id", "cell_type")
   control <- cell_anno$cell_id[cell_anno$cell_type == control_cell_type]
 }
 

@@ -2,10 +2,10 @@
 app <- "copykat.rna.R"
 
 args <- commandArgs(T)
-if (length(args) < 5) {
-  msg <- paste0("Usage: ", app, " <sample id> <matrix dir> <cell anno file> \\
-                                  <control cell type> <out dir>")
-  msg <- paste0(msg, "\nNote: set <control cell type> to NULL if do not use control")
+if (length(args) < 6) {
+  msg <- paste0("Usage: ", app, " <sample id> <matrix dir> \\
+                                  <cell anno file> <control cell type> \\
+                                  <number of cores> <out dir>")
   write(msg, file = stderr())
   quit("no", 1)
 }
@@ -14,7 +14,8 @@ sid <- args[1]
 matrix_dir <- args[2]
 cell_anno_fn <- args[3]
 control_cell_type <- args[4]
-out_dir <- args[5]
+ncores <- as.numeric(args[5])
+out_dir <- args[6]
 
 if (! dir.exists(out_dir)) {
   dir.create(out_dir, recursive = T)
@@ -49,7 +50,7 @@ copykat_obj <- copykat(rawmat=exp_raw_mtx, id.type="S",
                        sam.name=sid, 
                        distance="euclidean", 
                        norm.cell.names=control, 
-                       n.cores=20)
+                       n.cores=ncores)
 
 saveRDS(copykat_obj, paste0(out_dir, '/', sid, '.copykat.obj.init.rds'))
 

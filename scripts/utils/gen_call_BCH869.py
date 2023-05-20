@@ -273,7 +273,7 @@ cp  %s/BCH869/scRNA_copyKAT/copykat.rna.R  $work_dir
   %d  \\
   %s 
 ''' % (conf.sid, conf.expr_fn, conf.cell_anno_fn, 
-        conf.ref_cell_types, 20, out_dir)
+        conf.ref_cell_types, conf.n_cores, out_dir)
 
     s += '''
 set +ux
@@ -325,6 +325,7 @@ cp  %s/BCH869/scRNA_inferCNV/infercnv.rna.R  $work_dir
 #  <sample id>     \\
 #  <expression file>   \\
 #  <anno file>     \\
+#  <ref cell type>  \\
 #  <gene file>     \\
 #  <out dir>
 
@@ -332,9 +333,11 @@ cp  %s/BCH869/scRNA_inferCNV/infercnv.rna.R  $work_dir
   %s  \\
   %s  \\
   %s  \\
+  "%s"  \\
   %s  \\
   %s
-''' % (conf.sid, conf.expr_fn, conf.cell_anno_fn, 
+''' % (conf.sid, conf.expr_fn, 
+        conf.cell_anno_fn, conf.ref_cell_types,
         conf.infercnv_gene_anno_fn, out_dir)
 
     s += '''
@@ -442,7 +445,7 @@ cp  %s/BCH869/scRNA_numbat_preprocess/numbat.preprocess.R  $work_dir
         conf.bam_fn, conf.barcode_fn, 
         conf.numbat_gmap_fn, conf.numbat_eagle_fn, 
         conf.numbat_snp_fn, conf.numbat_panel_dir,
-        pileup_dir, 10)
+        pileup_dir, conf.n_cores)
 
     s += '''
 #Rscript $work_dir/numbat.preprocess.R  \\
@@ -536,7 +539,7 @@ cp  %s/BCH869/scRNA_numbat/numbat.rna.R  $work_dir
         ref_filter_dir, fn_prefix,
         out_dir,
         fn_prefix,
-        10)
+        conf.n_cores)
 
     s += '''
 set +ux

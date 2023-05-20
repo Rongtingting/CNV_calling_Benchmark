@@ -21,6 +21,7 @@ fi
 #  <matrix dir>   \
 #  <cell anno file>  \
 #  <control cell type> \
+#  <number of cores>  \
 #  <out dir>
 
 /usr/bin/time -v Rscript $work_dir/copykat.rna.R \
@@ -28,6 +29,7 @@ fi
   /groups/cgsd/xianjie/data/dataset/GX109/scRNA/matrix/helen_filtered_matrices   \
   /groups/cgsd/xianjie/data/dataset/GX109/scRNA/anno/GX109-T1c_scRNA_annotation_2column.tsv  \
   "immune cells"   \
+  20  \
   $work_dir
 
 set +ux

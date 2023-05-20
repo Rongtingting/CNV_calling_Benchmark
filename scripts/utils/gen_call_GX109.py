@@ -277,6 +277,7 @@ cp  %s/GX109/scRNA_copyKAT/copykat.rna.R  $work_dir
 #  <matrix dir>   \\
 #  <cell anno file>  \\
 #  <control cell type> \\
+#  <number of cores>  \\
 #  <out dir>
 
 /usr/bin/time -v Rscript $work_dir/copykat.rna.R \\
@@ -284,9 +285,10 @@ cp  %s/GX109/scRNA_copyKAT/copykat.rna.R  $work_dir
   %s  \\
   %s  \\
   "%s"  \\
+  %d  \\
   %s 
 ''' % (conf.sid, conf.dir_10x, conf.cell_anno_fn, 
-        conf.ref_cell_types, out_dir)
+        conf.ref_cell_types, conf.n_cores, out_dir)
 
     s += '''
 set +ux
@@ -456,7 +458,7 @@ cp  %s/GX109/scRNA_numbat_preprocess/numbat.preprocess.R  $work_dir
         conf.bam_fn, conf.barcode_fn, 
         conf.numbat_gmap_fn, conf.numbat_eagle_fn, 
         conf.numbat_snp_fn, conf.numbat_panel_dir,
-        pileup_dir, CONF_NUMBAT_NCORES)
+        pileup_dir, conf.n_cores)
 
     s += '''
 #Rscript $work_dir/numbat.preprocess.R  \\
@@ -550,7 +552,7 @@ cp  %s/GX109/scRNA_numbat/numbat.rna.R  $work_dir
         ref_filter_dir, fn_prefix,
         out_dir,
         fn_prefix,
-        CONF_NUMBAT_NCORES)
+        conf.n_cores)
 
     s += '''
 set +ux
@@ -955,8 +957,6 @@ def main():
 APP = "gen_call_GX109.py"
 
 CONF_GENE_IS_ROW = True
-CONF_NUMBAT_NCORES = 10
-CONF_QSUB_MEM = 200
 
 
 if __name__ == "__main__":

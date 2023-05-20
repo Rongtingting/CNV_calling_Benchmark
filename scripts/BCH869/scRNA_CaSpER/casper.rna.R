@@ -47,7 +47,8 @@ if (hg_ver == 19) {
 data <- read.csv(exp_file, stringsAsFactors = F, row.names = 1) # gene x cell
 
 #select control cell type
-anno <- read.delim(anno_file, stringsAsFactors = F)
+anno <- read.delim(anno_file, header = F, stringsAsFactors = F)
+colnames(anno) <- c("cell_id", "cell_type")
 control <- anno$cell_id[anno$cell_type == control_cell_type]
 
 genes <- rownames(data)
