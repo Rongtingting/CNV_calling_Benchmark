@@ -1,4 +1,4 @@
-# gen_call_BCH869.py - generate running scripts for CNV calling on BCH869 dataset by each tool.
+# gen_call.BCH869.py - generate running scripts for CNV calling on BCH869 dataset by each tool.
 
 
 import getopt
@@ -950,7 +950,7 @@ def main():
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
 
-APP = "gen_call_BCH869.py"
+APP = "gen_call.BCH869.py"
 
 
 if __name__ == "__main__":

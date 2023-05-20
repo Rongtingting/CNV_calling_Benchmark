@@ -1,5 +1,5 @@
 #!/bin/bash
-# gen_call_GX109.run.sh
+# gen_call.GX109.run.sh
 
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
@@ -16,7 +16,7 @@ fi
 
 echo -e "\nGenerate calling scripts.\n"
 out_dir=$result_dir
-python  $repo_scripts_dir/utils/gen_call_GX109.py  \
+python  $repo_scripts_dir/utils/gen_call.GX109.py  \
   --sid  $sid   \
   --bam  $dat_root_dir/bam/raw_GX109-T1c/possorted_genome_bam.bam  \
   --barcodes  $dat_root_dir/matrix/helen_filtered_matrices/barcodes.tsv  \

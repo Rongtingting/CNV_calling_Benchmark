@@ -1,5 +1,5 @@
 #!/bin/bash
-# gen_call_BCH869.run.sh
+# gen_call.BCH869.run.sh
 
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
@@ -16,7 +16,7 @@ fi
 
 echo -e "\nGenerate calling scripts.\n"
 out_dir=$result_dir
-python  $repo_scripts_dir/utils/gen_call_BCH869.py  \
+python  $repo_scripts_dir/utils/gen_call.BCH869.py  \
   --sid  $sid   \
   --bam  $dat_root_dir/bam/BCH869.492.bam.lst  \
   --barcodes  $dat_root_dir/bam/BCH869.492.id.lst  \

@@ -1,5 +1,5 @@
 #!/bin/bash
-# gen_plot.run.sh
+# gen_plot.GX109.run.sh
 
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts

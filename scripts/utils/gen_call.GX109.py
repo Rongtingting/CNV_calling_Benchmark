@@ -1,4 +1,4 @@
-# gen_call_GX109.py - generate running scripts for CNV calling on GX109 dataset by each tool.
+# gen_call.GX109.py - generate running scripts for CNV calling on GX109 dataset by each tool.
 
 
 import getopt
@@ -954,7 +954,7 @@ def main():
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
 
-APP = "gen_call_GX109.py"
+APP = "gen_call.GX109.py"
 
 CONF_GENE_IS_ROW = True
 
