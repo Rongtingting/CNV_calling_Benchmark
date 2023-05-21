@@ -1,4 +1,17 @@
 
+Release v0.3.0 (21/05/2023)
+===========================
+simulation
+- add simulation scripts for GX109.
+
+gen_call
+- add gen_call for BCH869.
+- update PBS resources.
+
+gen_eval
+- add gen_eval for BCH869.
+
+
 Release v0.2.0 (14/05/2023)
 ===========================
 gen_call_GX109
