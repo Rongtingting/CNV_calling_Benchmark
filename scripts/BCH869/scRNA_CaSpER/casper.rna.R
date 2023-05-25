@@ -59,7 +59,8 @@ if (file.exists(gene_anno_fn)) {
                                    centromere=centromere1, ishg19=is_hg19)
   saveRDS(annotation, gene_anno_fn)
 }
-data <- data[match(annotation$Gene, genes), ]
+#data <- data[match(annotation$Gene, genes), ]
+data <- data[genes %in% annotation$Gene, ]
 data <- log2(data + 1)
 
 loh <- readBAFExtractOutput(path = baf_dir, sequencing.type = "scRNA", 

@@ -68,7 +68,8 @@ if (file.exists(gene_anno_fn)) {
                                    centromere=centromere1, ishg19=is_hg19)
   saveRDS(annotation, gene_anno_fn)
 }
-log.ge <- log.ge[match(annotation$Gene, genes), ]
+#log.ge <- log.ge[match(annotation$Gene, genes), ]
+log.ge <- log.ge[genes %in% annotation$Gene, ]
 log.ge <- log2(log.ge + 1)
 
 loh <- readBAFExtractOutput(path = baf_dir, sequencing.type = "scRNA", 
