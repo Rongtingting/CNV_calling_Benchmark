@@ -530,7 +530,9 @@ extract_numbat <- function(
   mtx <- read.delim(obj_fn, header = T, check.names = F, stringsAsFactors = F)
   mtx <- mtx %>%
     dplyr::select(cell, CHROM, seg_start, seg_end, 
-                  p_amp, p_del, p_loh) %>%
+                  p_amp, p_del, p_loh, p_bamp, p_bdel) %>%
+    dplyr::mutate(p_amp = p_amp + p_bamp) %>%
+    dplyr::mutate(p_del = p_del + p_bdel) %>%
     dplyr::mutate(chrom = gsub("chr", "", CHROM)) %>%
     dplyr::mutate(reg_id = sprintf("%s:%s-%s", chrom, seg_start, seg_end))
   if (cnv_type == "copy_gain")
