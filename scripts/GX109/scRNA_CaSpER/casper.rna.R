@@ -70,6 +70,7 @@ if (file.exists(gene_anno_fn)) {
 }
 #log.ge <- log.ge[match(annotation$Gene, genes), ]
 log.ge <- log.ge[genes %in% annotation$Gene, ]
+annotation <- annotation[annotation$Gene %in% genes, ]
 log.ge <- log2(log.ge + 1)
 
 loh <- readBAFExtractOutput(path = baf_dir, sequencing.type = "scRNA", 
