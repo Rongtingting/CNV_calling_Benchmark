@@ -46,7 +46,7 @@ if (control_cell_type != "NULL") {
 copykat_obj <- copykat(rawmat=exp_raw_mtx, id.type="S", 
                        ngene.chr=5, 
                        win.size=25, 
-                       KS.cut=0.1, 
+                       KS.cut=0.15, 
                        sam.name=sid, 
                        distance="euclidean", 
                        norm.cell.names=control, 

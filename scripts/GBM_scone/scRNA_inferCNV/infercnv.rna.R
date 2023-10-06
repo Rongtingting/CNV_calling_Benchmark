@@ -38,7 +38,7 @@ infercnv_obj1 <- CreateInfercnvObject(raw_counts_matrix=gex_mtx,
                                       ref_group_names=c(ref_cell_type))
 
 infercnv_obj1 <- infercnv::run(infercnv_obj1,
-                               cutoff=0.1,  
+                               cutoff=1,  
                                out_dir=out_dir, 
                                cluster_by_groups=T,   
                                denoise=T,

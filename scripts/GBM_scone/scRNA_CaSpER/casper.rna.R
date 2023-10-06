@@ -82,7 +82,7 @@ object <- CreateCasperObject(raw.data=log.ge,
                              loh.name.mapping=loh.name.mapping, 
                              sequencing.type="single-cell", 
                              cnv.scale=3, loh.scale=3, 
-                             expr.cutoff=0.1, filter="median", 
+                             expr.cutoff=1, 
                              matrix.type="normalized",
                              annotation=annotation, method="iterative", loh=loh, 
                              control.sample.ids=control, cytoband=cytoband1)
