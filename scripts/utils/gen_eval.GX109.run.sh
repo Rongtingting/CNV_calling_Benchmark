@@ -25,7 +25,7 @@ python  $repo_scripts_dir/utils/gen_eval.py  \
   --casper  $tool_dir/GX109_casper  \
   --copykat  $tool_dir/GX109_copykat  \
   --infercnv  $tool_dir/GX109_infercnv  \
-  --truth  $anno_dir/GX109.cnv.ground.truth_update.sort.with_celltype.230508.tsv  \
+  --truth  $anno_dir/GX109.cnv.ground.truth_update.sort.with_celltype.231006.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno    \
   --repoScripts  $repo_scripts_dir   \
@@ -47,7 +47,7 @@ python  $repo_scripts_dir/utils/gen_eval.py  \
   --casper  $tool_dir/GX109_casper  \
   --copykat  $tool_dir/GX109_copykat  \
   --infercnv  $tool_dir/GX109_infercnv  \
-  --truth  $anno_dir/GX109.cnv.ground.truth_update.sort.with_celltype.230508.tsv  \
+  --truth  $anno_dir/GX109.cnv.ground.truth_update.sort.with_celltype.231006.tsv  \
   --cellAnno  $anno_dir/GX109-T1c_scRNA_annotation_2column.tsv  \
   --geneAnno  $gene_anno    \
   --repoScripts  $repo_scripts_dir   \

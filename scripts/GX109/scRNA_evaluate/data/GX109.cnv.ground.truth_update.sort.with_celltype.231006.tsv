@@ -1,0 +1,11 @@
+chrom	start	end	cnv_type	cell_type
+chr1	150000001	248956422	loh	stem, cancer cell
+chr10	40000001	133797422	loh	stem, cancer cell
+chr11	70000001	135000000	loh	stem, cancer cell
+chr12	7288360	16757762	loss	stem, cancer cell
+chr18	1	15360000	loss	stem, cancer cell
+chr18	20480001	80373285	loss	stem, cancer cell
+chr20	1	25600000	gain	stem, cancer cell
+chr20	30720001	64444167	gain	stem, cancer cell
+chr6	1	30000000	loh	stem, cancer cell
+chr8	1	145138636	gain	stem, cancer cell
