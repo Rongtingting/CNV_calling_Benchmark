@@ -1,4 +1,4 @@
-# gen_call.GBM.py - generate running scripts for CNV calling on GBM dataset by each tool.
+# gen_call.GBM_10x.py - generate running scripts for CNV calling on GBM 10x scRNA-seq dataset by each tool.
 
 
 import getopt
@@ -178,8 +178,8 @@ fi
 '''
 
     s += '''
-cp  %s/GBM/scRNA_CaSpER/casper.rna.R  $work_dir
-cp  %s/GBM/scRNA_CaSpER/casper.rna.plot.R  $work_dir
+cp  %s/GBM_10x/scRNA_CaSpER/casper.rna.R  $work_dir
+cp  %s/GBM_10x/scRNA_CaSpER/casper.rna.plot.R  $work_dir
 ''' % (conf.repo_scripts_dir, conf.repo_scripts_dir)
 
     out_dir = os.path.join(conf.dir_casper, "result")
@@ -267,7 +267,7 @@ fi
 '''
 
     s += '''
-cp  %s/GBM/scRNA_copyKAT/copykat.rna.R  $work_dir
+cp  %s/GBM_10x/scRNA_copyKAT/copykat.rna.R  $work_dir
 ''' % (conf.repo_scripts_dir, )
 
     out_dir = os.path.join(conf.dir_copykat, "result")
@@ -331,7 +331,7 @@ fi
 '''
 
     s += '''
-cp  %s/GBM/scRNA_inferCNV/infercnv.rna.R  $work_dir
+cp  %s/GBM_10x/scRNA_inferCNV/infercnv.rna.R  $work_dir
 ''' % (conf.repo_scripts_dir, )
 
     out_dir = os.path.join(conf.dir_infercnv, "result")
@@ -408,7 +408,7 @@ fi
 
     s += '''
 cp  %s/utils/pileup_and_phase.R  $work_dir
-cp  %s/GBM/scRNA_numbat_preprocess/numbat.preprocess.R  $work_dir
+cp  %s/GBM_10x/scRNA_numbat_preprocess/numbat.preprocess.R  $work_dir
 ''' % (conf.repo_scripts_dir, conf.repo_scripts_dir)
 
     out_dir = conf.dir_numbat_pre
@@ -524,7 +524,7 @@ fi
 '''
 
     s += '''
-cp  %s/GBM/scRNA_numbat/numbat.rna.R  $work_dir
+cp  %s/GBM_10x/scRNA_numbat/numbat.rna.R  $work_dir
 ''' % (conf.repo_scripts_dir, )
 
     out_dir = os.path.join(conf.dir_numbat, "result")
@@ -954,7 +954,7 @@ def main():
     sys.stdout.write("[I::%s] All Done!\n" % func)
 
 
-APP = "gen_call.GBM.py"
+APP = "gen_call.GBM_10x.py"
 
 CONF_GENE_IS_ROW = True
 

@@ -1,12 +1,12 @@
 #!/bin/bash
-# gen_call.GBM.run.sh
+# gen_call.GBM_10x.run.sh
 
 
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
 repo_xcltk_dir=/home/xianjie/projects/xcltk/preprocess
 result_dir=/home/xianjie/debug/test-xclbm/calling
-sid=GBM    # sample ID
-dat_root_dir=/groups/cgsd/xianjie/data/dataset/GBM
+sid=GBM_10x    # sample ID
+dat_root_dir=/groups/cgsd/xianjie/data/dataset/GBM/10xscrna_4416
 
 
 if [ ! -e "$result_dir" ]; then
@@ -16,7 +16,7 @@ fi
 
 echo -e "\nGenerate calling scripts.\n"
 out_dir=$result_dir
-python  $repo_scripts_dir/utils/gen_call.GBM.py  \
+python  $repo_scripts_dir/utils/gen_call.GBM_10x.py  \
   --sid  $sid   \
   --bam  $dat_root_dir/bam/possorted_genome_bam.bam  \
   --barcodes  $dat_root_dir/bam/barcodes.tsv  \
