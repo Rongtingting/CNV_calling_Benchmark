@@ -1,4 +1,4 @@
-# gen_call.GBM_scone.py - generate running scripts for CNV calling on GBM scone-seq dataset by each tool.
+# gen_call.GBM_scone.py - generate running scripts for CNV calling on GBM_scone dataset by each tool.
 
 
 import getopt
@@ -13,11 +13,10 @@ class Config:
 
         self.bam_fn = None
         self.barcode_fn = None
-        self.cell_tag = None
 
         self.dir_10x = None
         self.gene_is_row = None
- 
+
         self.cell_anno_fn = None
         self.ref_cell_types = None
 
@@ -35,6 +34,8 @@ class Config:
         self.numbat_snp_fn = None
         self.numbat_panel_dir = None
 
+        self.xclone_bam_fn = None
+        self.xclone_barcode_fn = None
         self.xclone_bam_fa_fn = None
         self.xclone_sanger_fa_fn = None
         self.xclone_gene_list_fn = None
@@ -68,7 +69,6 @@ class Config:
 
         assert_e(self.bam_fn)
         assert_e(self.barcode_fn)
-        assert_n(self.cell_tag)
 
         assert_e(self.dir_10x)
         if self.gene_is_row is None:
@@ -93,6 +93,8 @@ class Config:
         assert_e(self.numbat_snp_fn)
         assert_e(self.numbat_panel_dir)
 
+        assert_e(self.xclone_bam_fn)
+        assert_e(self.xclone_barcode_fn)
         assert_e(self.xclone_bam_fa_fn)
         assert_e(self.xclone_sanger_fa_fn)
         assert_e(self.xclone_gene_list_fn)
@@ -179,8 +181,7 @@ fi
 
     s += '''
 cp  %s/GBM_scone/scRNA_CaSpER/casper.rna.R  $work_dir
-cp  %s/GBM_scone/scRNA_CaSpER/casper.rna.plot.R  $work_dir
-''' % (conf.repo_scripts_dir, conf.repo_scripts_dir)
+''' % (conf.repo_scripts_dir, )
 
     out_dir = os.path.join(conf.dir_casper, "result")
     s += '''
@@ -208,23 +209,6 @@ cp  %s/GBM_scone/scRNA_CaSpER/casper.rna.plot.R  $work_dir
 ''' % (conf.sid, conf.dir_10x, conf.cell_anno_fn, 
         conf.ref_cell_types, conf.casper_gene_anno_fn, conf.hg_version,
         conf.casper_baf_dir, conf.casper_baf_suffix, out_dir)
-
-    s += '''
-#Rscript $work_dir/casper.rna.plot.R  \\
-#  <sample id>  \\
-#  <final chr mat> \\
-#  <loh median data> \\
-#  <out dir>
-
-/usr/bin/time -v Rscript $work_dir/casper.rna.plot.R \\
-  %s  \\
-  %s/%s.final_chr_mat.rds  \\
-  %s/%s.loh.median.filtered.data.rds  \\
-  %s
-''' % (conf.sid, 
-        out_dir, conf.sid,
-        out_dir, conf.sid,
-        out_dir)
 
     s += '''
 set +ux
@@ -351,8 +335,9 @@ cp  %s/GBM_scone/scRNA_inferCNV/infercnv.rna.R  $work_dir
   "%s"  \\
   %s  \\
   %s
-''' % (conf.sid, conf.dir_10x, conf.cell_anno_fn, 
-        conf.ref_cell_types, conf.infercnv_gene_anno_fn, out_dir)
+''' % (conf.sid, conf.dir_10x, 
+        conf.cell_anno_fn, conf.ref_cell_types,
+        conf.infercnv_gene_anno_fn, out_dir)
 
     s += '''
 set +ux
@@ -453,7 +438,8 @@ cp  %s/GBM_scone/scRNA_numbat_preprocess/numbat.preprocess.R  $work_dir
   --snpvcf  %s  \\
   --paneldir  %s  \\
   --outdir  %s  \\
-  --ncores  %d 
+  --ncores  %d  \\
+  --smartseq
 ''' % (conf.sid, conf.sid, 
         conf.bam_fn, conf.barcode_fn, 
         conf.numbat_gmap_fn, conf.numbat_eagle_fn, 
@@ -602,14 +588,16 @@ fi
   -F  %s  \\
   -O  %s  \\
   -g  %d  \\
-  -C  %s  \\
-  -u  UB  \\
-  -p  %d 
+  -C  RG  \\
+  -u  None  \\
+  -p  %d  \\
+  --noDUP  \\
+  --smartseq
 ''' % (conf.repo_xcltk_dir,
-        conf.sid, conf.bam_fn,
-        conf.barcode_fn, conf.xclone_sanger_fa_fn,
+        conf.sid, conf.xclone_bam_fn,
+        conf.xclone_barcode_fn, conf.xclone_sanger_fa_fn,
         conf.dir_xclone_pre_phase, conf.hg_version,
-        conf.cell_tag, conf.n_cores)
+        conf.n_cores)
 
     s += '''
 set +ux
@@ -660,15 +648,16 @@ fi
   -f  %s  \\
   -O  %s  \\
   -g  %d  \\
-  -C  %s  \\
-  -u  UB  \\
-  -p  %d 
+  -C  RG  \\
+  -u  None  \\
+  -p  %d  \\
+  --noDUP
 ''' % (conf.repo_xcltk_dir,
-        conf.sid, conf.bam_fn,
-        conf.barcode_fn, conf.dir_xclone_phase,
+        conf.sid, conf.xclone_bam_fn,
+        conf.xclone_barcode_fn, conf.dir_xclone_phase,
         conf.xclone_bam_fa_fn,
         conf.dir_xclone_post_phase, conf.hg_version,
-        conf.cell_tag, conf.n_cores)
+        conf.n_cores)
 
     s += '''
 set +ux
@@ -718,14 +707,14 @@ xcltk basefc  \\
   -T  tsv  \\
   -O  %s  \\
   -p  %d  \\
-  --cellTAG  %s  \\
-  --UMItag  UB  \\
+  --cellTAG  RG  \\
+  --UMItag  None  \\
   --minLEN  30  \\
   --minMAPQ  20  \\
-  --maxFLAG  4096
-''' % (conf.bam_fn, conf.barcode_fn, 
+  --maxFLAG  255
+''' % (conf.xclone_bam_fn, conf.xclone_barcode_fn, 
         conf.xclone_gene_list_fn, conf.dir_xclone_basefc, 
-        conf.n_cores, conf.cell_tag)
+        conf.n_cores)
 
     s += '''
 set +ux
@@ -851,9 +840,8 @@ def usage(fp = sys.stderr):
     s += "\n" 
     s += "Options:\n"
     s += "  --sid STR                Sample ID.\n"
-    s += "  --bam FILE               BAM file.\n"
-    s += "  --barcodes FILE          Barcode file.\n"
-    s += "  --cellTAG STR            Cell barcode tag.\n"
+    s += "  --bam FILE               BAM list file.\n"
+    s += "  --barcodes FILE          BAM ID file.\n"
     s += "  --dir10x DIR             Dir of 10x count matrix.\n"
     s += "  --refCellTypes STR       Reference cell types, semicolon separated.\n"
     s += "  --outdir DIR             Output dir.\n"
@@ -862,7 +850,6 @@ def usage(fp = sys.stderr):
     s += "  --cellAnno FILE          Cell annotation file, 2 columns.\n"
     s += "  --geneAnno FILE          Gene annotation file.\n"
     s += "  --hgVersion INT          Version of genome, 19 or 38.\n"
-    s += "  --geneIsRow BOOL         Whether row of count matrix is gene [%s]\n" % CONF_GENE_IS_ROW
     s += "  --casperBAF DIR          CaSpER BAF data dir.\n"
     s += "  --casperBAFSuffix STR    Suffix of the CaSpER BAF data file.\n"
     s += "  --casperGeneAnno FILE    CaSpER gene annotation file.\n"
@@ -871,6 +858,8 @@ def usage(fp = sys.stderr):
     s += "  --numbatEagle FILE       Numbat eagle path.\n"
     s += "  --numbatSNP FILE         Numbat SNP file.\n"
     s += "  --numbatPanel DIR        Numbat panel dir.\n"
+    s += "  --xcloneBAM FILE         XClone merged BAM file.\n"
+    s += "  --xcloneBarcodes FILE    XClone barcode file for merged BAM.\n"
     s += "  --xcloneBamFA FILE       XClone fasta file used for BAM alignment.\n"
     s += "  --xcloneSangerFA FILE    XClone fasta file used for Sanger fixref.\n"
     s += "  --xcloneGeneList FILE    XClone gene list file (TSV format).\n"
@@ -892,7 +881,7 @@ def main():
     conf = Config()
     opts, args = getopt.getopt(sys.argv[1:], "", [
         "sid=",
-        "bam=", "barcodes=", "cellTAG=",
+        "bam=", "barcodes=",
         "dir10x=", "geneIsRow=",
         "cellAnno=", "refCellTypes=",
         "geneAnno=", "hgVersion=",
@@ -901,6 +890,7 @@ def main():
         "casperBAF=", "casperBAFSuffix=", "casperGeneAnno=",
         "infercnvGeneAnno=",
         "numbatGmap=", "numbatEagle=", "numbatSNP=", "numbatPanel=",
+        "xcloneBAM=", "xcloneBarcodes=",
         "xcloneBamFA=", "xcloneSangerFA=", "xcloneGeneList=",
         "ncores=",
         "version", "help"
@@ -912,7 +902,6 @@ def main():
         if op in   ("--sid"): conf.sid = val
         elif op in ("--bam"): conf.bam_fn = val
         elif op in ("--barcodes"): conf.barcode_fn = val
-        elif op in ("--celltag"): conf.cell_tag = val
         elif op in ("--dir10x"): conf.dir_10x = val
         elif op in ("--geneisrow"): conf.gene_is_row = __pystr2bool(val)
         elif op in ("--cellanno"): conf.cell_anno_fn = val
@@ -930,6 +919,8 @@ def main():
         elif op in ("--numbateagle"): conf.numbat_eagle_fn = val
         elif op in ("--numbatsnp"): conf.numbat_snp_fn = val
         elif op in ("--numbatpanel"): conf.numbat_panel_dir = val
+        elif op in ("--xclonebam"): conf.xclone_bam_fn = val
+        elif op in ("--xclonebarcodes"): conf.xclone_barcode_fn = val
         elif op in ("--xclonebamfa"): conf.xclone_bam_fa_fn = val
         elif op in ("--xclonesangerfa"): conf.xclone_sanger_fa_fn = val
         elif op in ("--xclonegenelist"): conf.xclone_gene_list_fn = val
