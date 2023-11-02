@@ -160,7 +160,7 @@ bm_main(
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = TRUE, save_all = FALSE)
 
-''' % ("NULL" if conf.plot_sid is None else conf.plot_sid,
+''' % ("NULL" if conf.plot_sid is None else '"%s"' % conf.plot_sid,
        conf.plot_dec, )
 
     with open(fn, "w") as fp:

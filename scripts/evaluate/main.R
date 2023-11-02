@@ -65,7 +65,7 @@ bm_main <- function(
   if (sid == "BCH869")
     truth_region <- truth_region %>%
       dplyr::rename(cell_type = clone)
-  else if (sid == "GBM_10x")
+  else if (stringr::str_detect(sid, "^GBM"))
     truth_region <- truth_region %>%
       dplyr::rename(cell_type = clone)
 
@@ -168,7 +168,7 @@ bm_main_fast1 <- function(
   if (sid == "BCH869")
     truth_region <- truth_region %>%
       dplyr::rename(cell_type = clone)
-  else if (sid == "GBM_10x")
+  else if (stringr::str_detect(sid, "^GBM"))
     truth_region <- truth_region %>%
       dplyr::rename(cell_type = clone)
 
