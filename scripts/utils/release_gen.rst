@@ -1,4 +1,14 @@
 
+Release v0.4.0 (02/11/2023)
+===========================
+gen_call
+- add GBM.
+
+gen_eval
+- add GBM
+- add param plot_sid.
+
+
 Release v0.3.0 (21/05/2023)
 ===========================
 simulation
