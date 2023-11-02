@@ -24,6 +24,7 @@ class Config:
         self.repo_scripts_dir = None
         self.out_dir = None
 
+        self.plot_sid = None
         self.plot_dec = None
 
         # intermediate variables
@@ -154,11 +155,13 @@ bm_main(
   cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
+  plot_sid = %s,
   plot_dec = %d, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = TRUE, save_all = FALSE)
 
-''' % (conf.plot_dec, )
+''' % ("NULL" if conf.plot_sid is None else conf.plot_sid,
+       conf.plot_dec, )
 
     with open(fn, "w") as fp:
         fp.write(s)
@@ -279,6 +282,7 @@ def usage(fp = sys.stderr):
     s += "  --cellAnno FILE        Cell annotation file.\n"
     s += "  --geneAnno FILE        Gene annotation file.\n"
     s += "  --repoScripts DIR      Repo scripts dir.\n"
+    s += "  --plotSid STR          Sample ID shown in figure.\n"
     s += "  --plotDec INT          Decimal in plots [%d]\n" % CONF_PLOT_DEC
     s += "  --version              Print version and exit.\n"
     s += "  --help                 Print this message and exit.\n"
@@ -303,7 +307,7 @@ def main():
         "truth=", 
         "cellAnno=", "geneAnno=", 
         "repoScripts=",
-        "plotDec=",
+        "plotSid=", "plotDec=",
         "version", "help"
     ])
 
@@ -322,6 +326,7 @@ def main():
         elif op in ("--cellanno"): conf.cell_anno_fn = val
         elif op in ("--geneanno"): conf.gene_anno_fn = val
         elif op in ("--reposcripts"): conf.repo_scripts_dir = val
+        elif op in ("--plotsid"): conf.plot_sid = val
         elif op in ("--plotdec"): conf.plot_dec = int(val)
         elif op in ("--version"): sys.stderr.write("%s\n" % VERSION); sys.exit(1)
         elif op in ("--help"): usage(); sys.exit(1)

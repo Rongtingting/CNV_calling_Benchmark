@@ -18,6 +18,7 @@ echo -e "\nGenerate evaluation scripts for gene scale.\n"
 out_dir=$result_dir/gene_scale
 python  $repo_scripts_dir/utils/gen_eval.py  \
   --sid  GBM_10x   \
+  --plotSid  GBM     \
   --cnvScale  gene    \
   --outdir  $out_dir    \
   --xclone  $tool_dir/GBM_xclone/extracted_data    \
@@ -40,6 +41,7 @@ echo -e "\nGenerate evaluation scripts for arm scale.\n"
 out_dir=$result_dir/arm_scale
 python  $repo_scripts_dir/utils/gen_eval.py  \
   --sid  GBM_10x   \
+  --plotSid  GBM     \
   --cnvScale  arm    \
   --outdir  $out_dir    \
   --xclone  $tool_dir/GBM_xclone/extracted_data_merge_chr_arm  \

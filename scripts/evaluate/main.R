@@ -31,6 +31,7 @@ bm_main <- function(
   cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
+  plot_sid = NULL,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE)
@@ -108,6 +109,7 @@ bm_main <- function(
     dat_list, cell_anno, gene_anno, truth, out_dir,
     overlap_mode, filter_func, 
     metrics, max_n_cutoff,
+    plot_sid,
     plot_dec, plot_legend_xmin, plot_legend_ymin,
     plot_width, plot_height, plot_dpi,
     verbose, save_all
@@ -132,6 +134,7 @@ bm_main_fast1 <- function(
   cell_anno_fn, gene_anno_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
+  plot_sid = NULL,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE)
@@ -225,6 +228,7 @@ bm_main_fast1 <- function(
     dat_list, cell_anno, gene_anno, truth, out_dir,
     overlap_mode, filter_func, 
     metrics, max_n_cutoff,
+    plot_sid,
     plot_dec, plot_legend_xmin, plot_legend_ymin,
     plot_width, plot_height, plot_dpi,
     verbose, save_all
@@ -247,6 +251,7 @@ bm_main_fast2 <- function(
   gene_anno_fn,
   cell_subset_fn, gene_subset_fn, truth_fn, out_dir,
   overlap_mode = "customize", filter_func = NULL, max_n_cutoff = 1000,
+  plot_sid = NULL,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE)
@@ -293,6 +298,7 @@ bm_main_fast2 <- function(
     xclone_mtx, metrics, metric_fn,
     cell_subset_fn, gene_subset_fn, truth_fn, out_dir,
     max_n_cutoff,
+    plot_sid,
     plot_dec, plot_legend_xmin, plot_legend_ymin,
     plot_width, plot_height, plot_dpi,
     verbose, save_all) 

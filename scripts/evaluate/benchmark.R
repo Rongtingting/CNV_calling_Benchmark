@@ -54,6 +54,8 @@ get_step_index <- function(step_name, step_idx) {
 #'   output filtered cells and genes in a list.
 #' @param metrics String vector. Each value could be "ROC" or "PRC".
 #' @param max_n_cutoff Integer vector. Maximum number of sampled cutoff values.
+#' @param plot_sid A string. Sample ID shown in the figures. Set to `NULL` to
+#'   make it the same with `sid`.
 #' @param plot_dec Integer vector. Number of decimal places for AUC.
 #' @param plot_legend_xmin Float vector. The xmin position of legend.
 #' @param plot_legend_ymin Float vector. The ymin position of legend.
@@ -68,6 +70,7 @@ run_benchmark <- function(
   dat_list, cell_anno, gene_anno, truth, out_dir,
   overlap_mode = "customize", filter_func = NULL, 
   metrics = c("ROC", "PRC"), max_n_cutoff = 1000,
+  plot_sid = NULL,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE) 
@@ -76,6 +79,8 @@ run_benchmark <- function(
 
   n_mt <- length(metrics)
   max_n_cutoff <- rep_n(max_n_cutoff, n_mt)
+  if (is.null(plot_sid))
+    plot_sid <- sid
   plot_dec <- rep_n(plot_dec, n_mt)
   plot_legend_xmin <- rep_n(plot_legend_xmin, n_mt)
   plot_legend_ymin <- rep_n(plot_legend_ymin, n_mt)
@@ -170,7 +175,7 @@ run_benchmark <- function(
   flush_print(sprintf("[I::%s][%s] truth data is saved to dir '%s'.", func,
               str_now(), dir_truth))
 
-  # calculate Metrics
+  # calculate metrics
   flush_print(sprintf("[I::%s][%s] calculate Metrics ...", func, str_now()))
 
   figs <- list()
@@ -208,11 +213,11 @@ run_benchmark <- function(
     p <- p_title <- NULL
   
     if (cnv_type == "copy_gain")
-      p_title <- sprintf("%s %s Curve for Copy Gain", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for Copy Gain", plot_sid, mt_upper)
     else if (cnv_type == "copy_loss")
-      p_title <- sprintf("%s %s Curve for Copy Loss", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for Copy Loss", plot_sid, mt_upper)
     else
-      p_title <- sprintf("%s %s Curve for LOH", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for LOH", plot_sid, mt_upper)
   
     if (mt_upper == "ROC")
       p <- plot_roc(dat_list, dec = plot_dec[i], title = p_title,
@@ -255,6 +260,7 @@ run_bm_fast <- function(
   xclone_mtx, metrics, metric_fn,
   cell_subset_fn, gene_subset_fn, truth_fn, out_dir,
   max_n_cutoff = 1000,
+  plot_sid = NULL,
   plot_dec = 3, plot_legend_xmin = 0.7, plot_legend_ymin = 0.25,
   plot_width = 6.5, plot_height = 5, plot_dpi = 600,
   verbose = FALSE, save_all = FALSE) 
@@ -263,6 +269,8 @@ run_bm_fast <- function(
 
   n_mt <- length(metrics)
   max_n_cutoff <- rep_n(max_n_cutoff, n_mt)
+  if (is.null(plot_sid))
+    plot_sid <- sid
   plot_dec <- rep_n(plot_dec, n_mt)
   plot_legend_xmin <- rep_n(plot_legend_xmin, n_mt)
   plot_legend_ymin <- rep_n(plot_legend_ymin, n_mt)
@@ -329,7 +337,7 @@ run_bm_fast <- function(
   if (verbose)
     str(xclone_mtx)
 
-  # calculate Metrics
+  # calculate metrics
   figs <- list()
   s_idx <- 4
   for (i in 1:n_mt) {
@@ -397,11 +405,11 @@ run_bm_fast <- function(
     flush_print(sprintf("[I::%s][%s] visualization ...", func, str_now()))
   
     if (cnv_type == "copy_gain")
-      p_title <- sprintf("%s %s Curve for Copy Gain", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for Copy Gain", plot_sid, mt_upper)
     else if (cnv_type == "copy_loss")
-      p_title <- sprintf("%s %s Curve for Copy Loss", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for Copy Loss", plot_sid, mt_upper)
     else
-      p_title <- sprintf("%s %s Curve for LOH", sid, mt_upper)
+      p_title <- sprintf("%s %s Curve for LOH", plot_sid, mt_upper)
   
     if (mt_upper == "ROC")
       p <- plot_roc(dat_list, dec = plot_dec[i], title = p_title,
