@@ -1113,7 +1113,8 @@ run_truth <- function(cells, genes, truth, cnv_type, verbose = FALSE)
     dplyr::distinct(Gene, cell_type) %>%
     dplyr::left_join(cells, by = "cell_type") %>%  # <Gene> <cell_type> <cell>
     dplyr::select(Gene, cell) %>%
-    dplyr::distinct(Gene, cell)
+    dplyr::distinct(Gene, cell) %>%
+    dplyr::filter(! is.na(cell))
 
   if (verbose) {
     flush_print(sprintf("[I::%s] ground truth matrix mapping to gene scale:", 
