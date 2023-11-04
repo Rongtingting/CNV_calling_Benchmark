@@ -4,7 +4,7 @@
 
 anno_dir=/groups/cgsd/xianjie/data/dataset/GBM/10xscrna_4416/anno
 repo_scripts_dir=/home/xianjie/projects/CNV_calling_Benchmark/scripts
-tool_dir=/groups/cgsd/xianjie/result/xclbm2/GBM/GBM_call_230825
+tool_dir=/groups/cgsd/xianjie/result/xclbm2/GBM_10x/GBM_call_230825
 gene_anno=/groups/cgsd/xianjie/data/refapp/xclone/annotate_genes_hg38_update.txt
 result_dir=/home/xianjie/debug/test-xclbm/normal
 
