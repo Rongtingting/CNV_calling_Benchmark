@@ -36,7 +36,8 @@ obj <- run_numbat(
   t = 1e-5,
   ncores = ncores,
   plot = TRUE,
-  out_dir = out_dir
+  out_dir = out_dir,
+  multi_allelic = FALSE     # https://github.com/kharchenkolab/numbat/issues/146
 )
 
 saveRDS(obj, sprintf("%s/%s.out.object.rds", out_dir, out_prefix))
