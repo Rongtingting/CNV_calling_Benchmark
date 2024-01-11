@@ -41,7 +41,8 @@ python  $repo_scripts_dir/utils/gen_call.GX109.py  \
   --xcloneBamFA  /groups/cgsd/xianjie/data/refseq/refdata-cellranger-GRCh38-1.2.0/fasta/genome.fa  \
   --xcloneSangerFA  /groups/cgsd/xianjie/data/refapp/sanger_imputation/human_g1k_v37.fasta  \
   --xcloneGeneList  $repo_xcltk_dir/data/annotate_genes_hg38_update_20230126.txt  \
-  --ncores  10
+  --ncores  10  \
+  --tools casper,copykat,infercnv,numbat,xclone
 
 if [ -e "$out_dir/run.sh" ]; then
     chmod u+x $out_dir/run.sh

@@ -44,6 +44,9 @@ class Config:
         self.out_dir = None
         self.n_cores = None
 
+        self.tools_str = "casper,copykat,infercnv,numbat,xclone"
+        self.tools = []
+
         # intermediate variables
         self.dir_casper = None
         self.dir_copykat = None
@@ -82,20 +85,20 @@ class Config:
         if self.hg_version not in (19, 38):
             raise ValueError
 
-        assert_e(self.casper_baf_dir)
-        assert_n(self.casper_baf_suffix)
-        assert_e(self.casper_gene_anno_fn)
+        #assert_e(self.casper_baf_dir)
+        #assert_n(self.casper_baf_suffix)
+        #assert_e(self.casper_gene_anno_fn)
 
-        assert_e(self.infercnv_gene_anno_fn)
+        #assert_e(self.infercnv_gene_anno_fn)
 
-        assert_e(self.numbat_gmap_fn)
-        assert_e(self.numbat_eagle_fn)
-        assert_e(self.numbat_snp_fn)
-        assert_e(self.numbat_panel_dir)
+        #assert_e(self.numbat_gmap_fn)
+        #assert_e(self.numbat_eagle_fn)
+        #assert_e(self.numbat_snp_fn)
+        #assert_e(self.numbat_panel_dir)
 
-        assert_e(self.xclone_bam_fa_fn)
-        assert_e(self.xclone_sanger_fa_fn)
-        assert_e(self.xclone_gene_list_fn)
+        #assert_e(self.xclone_bam_fa_fn)
+        #assert_e(self.xclone_sanger_fa_fn)
+        #assert_e(self.xclone_gene_list_fn)
 
         assert_n(self.out_dir)
         if not os.path.exists(self.out_dir):
@@ -105,6 +108,9 @@ class Config:
         assert_e(self.repo_xcltk_dir)
 
         assert_notnone(self.n_cores)
+
+        if self.tools_str:
+            self.tools = [x.strip().lower() for x in self.tools_str.split(",")]
 
 
 def assert_e(path):
@@ -749,9 +755,14 @@ def gen_qsub(conf):
     func = "gen_qsub"
 
     qsub_list = []
+    to_create = lambda x: True if x in conf.tools else False
 
     # run_state: whether the qsub script should be added to `run.sh`.
-    for run_state, tool, gen_func, res_dir in zip(
+    for create_state, run_state, tool, gen_func, res_dir in zip(
+        (to_create("casper"), to_create("copykat"), to_create("infercnv"),
+            to_create("numbat"), to_create("numbat"),
+            to_create("xclone"), to_create("xclone"),
+            to_create("xclone"), to_create("xclone")),
         (True, True, True,
             True, False,
             True, False,
@@ -769,13 +780,14 @@ def gen_qsub(conf):
             conf.dir_xclone_pre_phase, conf.dir_xclone_post_phase,
             conf.dir_xclone_basefc, conf.dir_xclone)):
 
-        qsub_script = "%s.%s.qsub.sh" % (__get_script_prefix(conf), tool)
-        qsub_script_path = os.path.join(res_dir, qsub_script)
-        res_script = gen_func(qsub_script_path, conf)
+        if create_state:
+            qsub_script = "%s.%s.qsub.sh" % (__get_script_prefix(conf), tool)
+            qsub_script_path = os.path.join(res_dir, qsub_script)
+            res_script = gen_func(qsub_script_path, conf)
 
-        print("[I::%s] %s - %s" % (func, tool, qsub_script_path))
-        if run_state:
-            qsub_list.append((tool, res_dir, qsub_script))
+            print("[I::%s] %s - %s" % (func, tool, qsub_script_path))
+            if run_state:
+                qsub_list.append((tool, res_dir, qsub_script))
 
     return(qsub_list)
 
@@ -874,6 +886,7 @@ def usage(fp = sys.stderr):
     s += "  --xcloneBamFA FILE       XClone fasta file used for BAM alignment.\n"
     s += "  --xcloneSangerFA FILE    XClone fasta file used for Sanger fixref.\n"
     s += "  --xcloneGeneList FILE    XClone gene list file (TSV format).\n"
+    s += "  --tools STR              A list of comma separated tools to be called, name in small case.\n"
     s += "  --ncores INT             Number of cores.\n"
     s += "  --version                Print version and exit.\n"
     s += "  --help                   Print this message and exit.\n"
@@ -902,6 +915,7 @@ def main():
         "infercnvGeneAnno=",
         "numbatGmap=", "numbatEagle=", "numbatSNP=", "numbatPanel=",
         "xcloneBamFA=", "xcloneSangerFA=", "xcloneGeneList=",
+        "tools=",
         "ncores=",
         "version", "help"
     ])
@@ -933,6 +947,7 @@ def main():
         elif op in ("--xclonebamfa"): conf.xclone_bam_fa_fn = val
         elif op in ("--xclonesangerfa"): conf.xclone_sanger_fa_fn = val
         elif op in ("--xclonegenelist"): conf.xclone_gene_list_fn = val
+        elif op in ("--tools"): conf.tools_str = val
         elif op in ("--ncores"): conf.n_cores = int(val)
         elif op in ("--version"): sys.stderr.write("%s\n" % VERSION); sys.exit(1)
         elif op in ("--help"): usage(); sys.exit(1)

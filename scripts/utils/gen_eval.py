@@ -27,6 +27,9 @@ class Config:
         self.plot_sid = None
         self.plot_dec = None
 
+        self.tools_str = "casper,copykat,infercnv,numbat,xclone"
+        self.tools = []
+
         # intermediate variables
         self.copy_gain_dir = None
         self.copy_loss_dir = None
@@ -39,11 +42,11 @@ class Config:
         if self.cnv_scale not in ("gene", "arm"):
             raise ValueError
 
-        assert_e(self.casper_dir)
-        assert_e(self.copykat_dir)
-        assert_e(self.infercnv_dir)
-        assert_e(self.numbat_dir)
-        assert_e(self.xclone_dir)
+        #assert_e(self.casper_dir)
+        #assert_e(self.copykat_dir)
+        #assert_e(self.infercnv_dir)
+        #assert_e(self.numbat_dir)
+        #assert_e(self.xclone_dir)
 
         assert_e(self.cell_anno_fn)
         assert_e(self.gene_anno_fn)
@@ -57,6 +60,9 @@ class Config:
 
         if not self.plot_dec:
             self.plot_dec = CONF_PLOT_DEC
+
+        if self.tools_str:
+            self.tools = [x.strip().lower() for x in self.tools_str.split(",")]
 
 
 def assert_e(path):
@@ -113,33 +119,79 @@ cnv_scale <- "%s"        # could be "gene" or "arm".
 ''' % (conf.sid, cnv_type, cnv_scale)
 
     xclone_dir = __get_xclone_prob_dir(conf, cnv_type)
+
+    method_list, method_sub_list, mtx_type_list, dat_dir_list = [], [], [], []
+
     if cnv_type in ("copy_gain", "copy_loss"):
+        for tl in conf.tools:
+            if tl == "casper":
+                method_list.append("casper")
+                method_sub_list.append("casper")
+                mtx_type_list.append("expr")
+                dat_dir_list.append(conf.casper_dir)
+            elif tl == "copykat":
+                method_list.append("copykat")
+                method_sub_list.append("copykat")
+                mtx_type_list.append("expr")
+                dat_dir_list.append(conf.copykat_dir)
+            elif tl == "infercnv":
+                method_list.append("infercnv")
+                method_sub_list.append("infercnv")
+                mtx_type_list.append("expr")
+                dat_dir_list.append(conf.infercnv_dir)
+            elif tl == "numbat":
+                method_list.append("numbat")
+                method_sub_list.append("numbat")
+                mtx_type_list.append("prob")
+                dat_dir_list.append(conf.numbat_dir)
+            elif tl == "xclone":
+                method_list.append("xclone")
+                method_sub_list.append("xclone")
+                mtx_type_list.append("prob")
+                dat_dir_list.append(xclone_dir)
         s += '''
-method_list <- c("casper", "copykat", "infercnv", "numbat", "xclone")
-method_sub_list <- c("casper", "copykat", "infercnv", "numbat", "xclone")
-mtx_type_list <- c("expr", "expr", "expr", "prob", "prob")
-dat_dir_list <- c(
-  "%s",
-  "%s",
-  "%s",
-  "%s",
-  "%s"
-)
-''' % (conf.casper_dir, conf.copykat_dir, conf.infercnv_dir, conf.numbat_dir, 
-       xclone_dir)
+method_list <- c(%s)
+method_sub_list <- c(%s)
+mtx_type_list <- c(%s)
+dat_dir_list <- c(%s)
+''' % (", ".join(['"%s"' % x for x in method_list]),
+       ", ".join(['"%s"' % x for x in method_sub_list]),
+       ", ".join(['"%s"' % x for x in mtx_type_list]),
+       ", ".join(['"%s"' % x for x in dat_dir_list])
+      )
 
     else:
+        for tl in conf.tools:
+            if tl == "casper":
+                method_list.append("casper")
+                method_sub_list.append("casper_median")
+                mtx_type_list.append("baf")
+                dat_dir_list.append(conf.casper_dir)
+
+                method_list.append("casper")
+                method_sub_list.append("casper_medianDev")
+                mtx_type_list.append("baf")
+                dat_dir_list.append(conf.casper_dir)
+            elif tl == "numbat":
+                method_list.append("numbat")
+                method_sub_list.append("numbat")
+                mtx_type_list.append("prob")
+                dat_dir_list.append(conf.numbat_dir)
+            elif tl == "xclone":
+                method_list.append("xclone")
+                method_sub_list.append("xclone")
+                mtx_type_list.append("prob")
+                dat_dir_list.append(xclone_dir)
         s += '''
-method_list <- c("casper", "casper", "numbat", "xclone")
-method_sub_list <- c("casper_median", "casper_medianDev", "numbat", "xclone")
-mtx_type_list <- c("baf", "baf", "prob", "prob")
-dat_dir_list <- c(
-  "%s",
-  "%s",
-  "%s",
-  "%s"
-)
-''' % (conf.casper_dir, conf.casper_dir, conf.numbat_dir, xclone_dir)
+method_list <- c(%s)
+method_sub_list <- c(%s)
+mtx_type_list <- c(%s)
+dat_dir_list <- c(%s)
+''' % (", ".join(['"%s"' % x for x in method_list]),
+       ", ".join(['"%s"' % x for x in method_sub_list]),
+       ", ".join(['"%s"' % x for x in mtx_type_list]),
+       ", ".join(['"%s"' % x for x in dat_dir_list])
+      )
 
     s += '''
 cell_anno_fn <- "%s"
@@ -284,6 +336,7 @@ def usage(fp = sys.stderr):
     s += "  --repoScripts DIR      Repo scripts dir.\n"
     s += "  --plotSid STR          Sample ID shown in figure.\n"
     s += "  --plotDec INT          Decimal in plots [%d]\n" % CONF_PLOT_DEC
+    s += "  --tools STR            A list of comma separated tools to be evaluated, names in small case.\n"
     s += "  --version              Print version and exit.\n"
     s += "  --help                 Print this message and exit.\n"
     s += "\n"
@@ -308,6 +361,7 @@ def main():
         "cellAnno=", "geneAnno=", 
         "repoScripts=",
         "plotSid=", "plotDec=",
+        "tools=",
         "version", "help"
     ])
 
@@ -328,6 +382,7 @@ def main():
         elif op in ("--reposcripts"): conf.repo_scripts_dir = val
         elif op in ("--plotsid"): conf.plot_sid = val
         elif op in ("--plotdec"): conf.plot_dec = int(val)
+        elif op in ("--tools"): conf.tools_str = val
         elif op in ("--version"): sys.stderr.write("%s\n" % VERSION); sys.exit(1)
         elif op in ("--help"): usage(); sys.exit(1)
         else:
