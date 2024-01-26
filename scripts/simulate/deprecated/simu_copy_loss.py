@@ -7,6 +7,9 @@ import os
 import pysam
 import sys
 
+# FIX ME! discarding is performed in read level instead of UMI level.
+# Some UMIs with more than one reads will be unexpectedly kept in
+# the BAM file.
 
 class Config:
     def __ini__(self):
@@ -252,6 +255,10 @@ def simu_loss(in_sam, out_sam,
     n_umi_c0_a0 = n_umi_c0_a1 = n_umi_c0_amb = 0
     n_umi_c1_a0 = n_umi_c1_a1 = n_umi_c1_amb = 0
     umi_del = {}
+
+    # FIX ME! discarding is performed in read level instead of UMI level.
+    # Some UMIs with more than one reads will be unexpectedly kept in
+    # the BAM file.
 
     for read in in_sam.fetch():
         read_chrom = read.reference_name
