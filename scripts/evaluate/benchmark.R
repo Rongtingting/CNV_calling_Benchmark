@@ -844,8 +844,15 @@ run_overlap <- function(dat_list, mode = "intersect", verbose = FALSE) {
   else
     stop("[E::%s] unknown mode '%s'.", func, mode)
 
-  if (length(new_dat_list) <= 0)
+  n <- length(new_dat_list)
+  if (n <= 0)
     stop("[E::%s] updated data list is empty!", func)
+
+  for (i in 1:n) {
+    dat <- new_dat_list[[i]]
+    dat$mtx[is.na(dat$mtx)] <- 0      # na.fill?
+    new_dat_list[[i]] <- dat
+  }
     
   mtx <- (new_dat_list[[1]])$mtx
   ovp_cells <- rownames(mtx)
